@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PIXL ARCADE</title>
+  <title>PIXL ARCADE 9.1.0</title>
   <link rel="icon" type="image/x-icon" href="pixlarcade.ico">
   
   <!-- Tailwind CSS & Retro Fonts -->
@@ -62,6 +62,42 @@
       --accent4: #f59e0b; --accent5: #ec4899; --card-hover: #4d1a7c; --glow: 0 0 35px rgba(217, 70, 239, 0.4);
     }
 
+    [data-theme="mint"] {
+      --bg: #03140d; --surface: rgba(4, 28, 18, 0.85); --surface2: #082d1c; --border: #0c4a2e;
+      --text: #e6fcf0; --muted: #4e9f78; --accent: #10b981; --accent2: #f43f5e; --accent3: #3b82f6;
+      --accent4: #f59e0b; --accent5: #8b5cf6; --card-hover: #0c3e26; --glow: 0 0 30px rgba(16, 185, 129, 0.3);
+    }
+
+    [data-theme="sakura"] {
+      --bg: #100508; --surface: rgba(28, 9, 15, 0.85); --surface2: #3a111e; --border: #641c32;
+      --text: #ffeef2; --muted: #a65972; --accent: #f472b6; --accent2: #10b981; --accent3: #0ea5e9;
+      --accent4: #f59e0b; --accent5: #f43f5e; --card-hover: #4e1728; --glow: 0 0 30px rgba(244, 114, 182, 0.3);
+    }
+
+    [data-theme="crimson"] {
+      --bg: #0e0101; --surface: rgba(28, 5, 5, 0.85); --surface2: #400c0c; --border: #6b1414;
+      --text: #ffebeb; --muted: #a84848; --accent: #ef4444; --accent2: #06b6d4; --accent3: #10b981;
+      --accent4: #f59e0b; --accent5: #a855f7; --card-hover: #520f0f; --glow: 0 0 30px rgba(239, 68, 68, 0.3);
+    }
+
+    [data-theme="gold"] {
+      --bg: #0c0901; --surface: rgba(26, 20, 4, 0.85); --surface2: #3a2d0b; --border: #634d12;
+      --text: #fffdf5; --muted: #a68b42; --accent: #fbbf24; --accent2: #ef4444; --accent3: #10b981;
+      --accent4: #3b82f6; --accent5: #ec4899; --card-hover: #4a3a0e; --glow: 0 0 30px rgba(251, 191, 36, 0.3);
+    }
+
+    [data-theme="toxic"] {
+      --bg: #050a02; --surface: rgba(13, 23, 6, 0.85); --surface2: #223a0f; --border: #3c631c;
+      --text: #f4fceb; --muted: #74a64d; --accent: #84cc16; --accent2: #a855f7; --accent3: #0ea5e9;
+      --accent4: #f59e0b; --accent5: #ef4444; --card-hover: #2b4914; --glow: 0 0 30px rgba(132, 204, 22, 0.3);
+    }
+
+    [data-theme="nebula"] {
+      --bg: #05020c; --surface: rgba(14, 6, 28, 0.85); --surface2: #241042; --border: #421e73;
+      --text: #faf5ff; --muted: #8d6cb8; --accent: #a855f7; --accent2: #3b82f6; --accent3: #10b981;
+      --accent4: #f59e0b; --accent5: #ec4899; --card-hover: #32165c; --glow: 0 0 30px rgba(168, 85, 247, 0.3);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -98,7 +134,7 @@
       position: fixed;
       top: 0; left: 0; bottom: 0; right: 0;
       background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      z-index: 999;
+      z-index: 99999;
       background-size: 100% 4px, 6px 100%;
       pointer-events: none;
     }
@@ -117,14 +153,23 @@
       z-index: 9999;
     }
 
-    /* custom styling for specific input games */
     .word-cell {
       transition: all 0.25s ease;
+    }
+    
+    /* Custom scrollbar for game listing on mobile */
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
 <body data-theme="dark" class="crt-effect">
 
+  <!-- ARCADE BAN SCREEN -->
   <div class="fixed inset-0 bg-[#060103] z-[99999] hidden flex-col items-center justify-center p-6 text-center border-[8px] border-[#ef4444]" id="banScreen">
     <div class="text-4xl sm:text-6xl font-extrabold text-[#ef4444] mb-4 tracking-wider uppercase animate-pulse">
       <i class="fa-solid fa-ban mr-3 animate-spin"></i>ACCESS FORBIDDEN
@@ -133,7 +178,7 @@
       ACCOUNT CURRENTLY SUSPENDED
     </div>
     <p class="text-[#fecdd3] max-w-lg mb-8 font-mono text-sm leading-relaxed">
-      A security breach was triggered because your handle attempted to bypass the moral protocol analyzer with prohibited words (e.g. penis, bad terminology). You have been temporarily blocked for 5 minutes.
+      A security breach was triggered because your identity handled forbidden words (such as "penis"). You are temporarily blocked for 5 minutes.
     </p>
     <div class="text-6xl font-black text-white font-mono mb-8 tracking-widest" id="banTimer">05:00</div>
     
@@ -152,14 +197,15 @@
     </div>
   </div>
 
+  <!-- HEADER -->
   <header class="glass-card sticky top-0 z-[100] m-3 p-4 flex flex-wrap items-center justify-between gap-4">
     <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)]">
-        <img src="pixlarcade.ico" onerror="this.outerHTML='<i class=\'fa-solid fa-gamepad text-white text-xl animate-bounce\'></i>'" class="w-7 h-7 object-contain">
+        <i class="fa-solid fa-gamepad text-white text-xl animate-bounce"></i>
       </div>
       <div>
         <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">PIXL<span class="text-violet-400">ARCADE</span></h1>
-        <p class="text-[10px] font-mono text-violet-300 font-semibold tracking-wider uppercase">System Upgrade v8.0.0</p>
+        <p class="text-[10px] font-mono text-violet-300 font-semibold tracking-wider uppercase">System Upgrade v9.1.0</p>
       </div>
     </div>
 
@@ -175,36 +221,70 @@
       </div>
 
       <button onclick="toggleThemePanel()" class="bg-slate-900/80 border border-slate-700/50 text-white font-bold px-4 py-2 rounded-full text-xs hover:border-violet-500 hover:text-violet-400 transition-all flex items-center gap-2">
-        <i class="fa-solid fa-palette"></i> Theme
+        <i class="fa-solid fa-palette"></i> Theme Shop
       </button>
     </div>
   </header>
 
+  <!-- THEME SELECT PANEL -->
   <div id="themePanel" class="glass-card fixed right-4 top-24 z-[110] p-4 w-72 hidden animate-fade-in">
     <h4 class="text-xs font-mono font-bold text-violet-400 uppercase tracking-widest mb-3 border-b border-violet-900 pb-2">Themes Custom Shop</h4>
-    <div class="flex flex-col gap-2" id="themeList"></div>
+    <div class="flex flex-col gap-2 max-h-96 overflow-y-auto pr-1" id="themeList"></div>
   </div>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
 
-    <section class="text-center py-12 relative overflow-hidden mb-8 rounded-3xl bg-slate-950/40 border border-slate-900">
-      <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-violet-600/10 blur-[120px] rounded-full pointer-events-none"></div>
-      <span class="inline-flex items-center gap-2 bg-violet-950/50 border border-violet-800/40 text-violet-400 font-mono text-xs font-bold px-4 py-1.5 rounded-full mb-4">
-        <i class="fa-solid fa-bolt animate-bounce"></i> 35-IN-1 RETRO COMPILATION FULLY PLAYABLE
-      </span>
-      <h2 class="text-4xl sm:text-6xl font-black leading-tight mb-4 tracking-tight">The Hyper <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-500 neon-text">Ultimate</span> Grid</h2>
-      <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base mb-6">
-        No mock construction frames, no placeholders. Engage in all 35 modular canvas & html simulations, test out keyboard or virtual D-pad inputs, and customize your layout with high scores.
-      </p>
+    <!-- HERO SECTION GRID -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Welcome card -->
+      <div class="lg:col-span-2 text-left p-6 sm:p-12 relative overflow-hidden rounded-3xl bg-slate-950/40 border border-slate-900 flex flex-col justify-center">
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-violet-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+        <span class="inline-flex self-start items-center gap-2 bg-violet-950/50 border border-violet-800/40 text-violet-400 font-mono text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+          <i class="fa-solid fa-bolt animate-bounce"></i> 35-IN-1 RETRO COMPILATION FULLY PLAYABLE
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-black leading-tight mb-4 tracking-tight">The Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-500 neon-text">v9.1.0</span> Grid</h2>
+        <p class="text-slate-400 max-w-xl text-sm sm:text-base mb-6">
+          Explore our compilation! All 35 classic game architectures are active with persistent coin savings, right-click and mobile flags in Minesweeper, and optimized layouts.
+        </p>
 
-      <div class="flex items-center justify-center gap-4 flex-wrap max-w-lg mx-auto">
-        <div class="bg-slate-900/60 border border-slate-800/80 px-4 py-3 rounded-2xl flex-1 min-w-[120px] text-center">
-          <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Playable Systems</p>
-          <p class="text-2xl font-black text-emerald-400 font-mono mt-1">35 Active</p>
+        <div class="flex items-center gap-4 flex-wrap max-w-lg">
+          <div class="bg-slate-900/60 border border-slate-800/80 px-4 py-3 rounded-2xl flex-1 min-w-[120px] text-center">
+            <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Playable Systems</p>
+            <p class="text-xl font-black text-emerald-400 font-mono mt-1">35 Active</p>
+          </div>
+          <div class="bg-slate-900/60 border border-slate-800/80 px-4 py-3 rounded-2xl flex-1 min-w-[120px] text-center">
+            <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Highscore Records</p>
+            <p class="text-xl font-black text-amber-400 font-mono mt-1" id="totalTrophies">0</p>
+          </div>
         </div>
-        <div class="bg-slate-900/60 border border-slate-800/80 px-4 py-3 rounded-2xl flex-1 min-w-[120px] text-center">
-          <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Total Highscore Records</p>
-          <p class="text-2xl font-black text-amber-400 font-mono mt-1" id="totalTrophies">0</p>
+      </div>
+
+      <!-- Daily Claim Reward Widget -->
+      <div class="glass-card p-6 flex flex-col justify-between items-center text-center relative overflow-hidden border-amber-500/40 shadow-[0_0_30px_rgba(245,158,11,0.08)]">
+        <div class="absolute -right-12 -top-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        
+        <div class="w-full">
+          <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-800">
+            <span class="text-xs font-mono font-bold text-amber-500 uppercase tracking-widest"><i class="fa-solid fa-gift mr-1"></i> Reward Station</span>
+            <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-mono font-bold">+100 Coins</span>
+          </div>
+          
+          <div class="my-3 text-amber-500">
+            <i class="fa-solid fa-cubes-stacked text-5xl animate-bounce"></i>
+          </div>
+          
+          <h3 class="text-lg font-black text-white mt-2">Daily Claim Hub</h3>
+          <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">Boost your coins once every 24 hours to purchase custom styles!</p>
+        </div>
+
+        <div class="w-full mt-4 space-y-3">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl py-2 px-4 text-xs font-mono" id="dailyTimerDisplay">
+            Checking status...
+          </div>
+          
+          <button id="claimDailyBtn" onclick="claimDailyReward()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-black uppercase text-xs tracking-wider rounded-xl transition shadow-lg shadow-amber-500/20">
+            Claim Daily Login
+          </button>
         </div>
       </div>
     </section>
@@ -216,17 +296,19 @@
         <input type="text" id="gameSearch" oninput="filterGames()" class="w-full bg-slate-950/80 border border-slate-800/80 rounded-xl py-2.5 pl-11 pr-4 text-white text-sm focus:outline-none focus:border-violet-500" placeholder="Filter through 35 arcade titles...">
       </div>
       <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="categoryFilters">
-        <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl text-xs font-bold transition bg-violet-600 text-white">All Games</button>
-        <button onclick="filterCategory('action')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Action & Speed</button>
-        <button onclick="filterCategory('puzzle')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Mind Puzzles</button>
-        <button onclick="filterCategory('casino')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:bg-slate-800">Casino & Fortune</button>
+        <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl text-xs font-bold transition bg-violet-600 text-white shrink-0">All Games</button>
+        <button onclick="filterCategory('action')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:bg-slate-800 shrink-0">Action & Speed</button>
+        <button onclick="filterCategory('puzzle')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:bg-slate-800 shrink-0">Mind Puzzles</button>
+        <button onclick="filterCategory('casino')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-slate-400 hover:bg-slate-800 shrink-0">Casino & Fortune</button>
       </div>
     </div>
 
+    <!-- GAME TILES GRID -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-fade-in" id="gameGrid"></div>
 
   </main>
 
+  <!-- PROFILE MODAL -->
   <div id="profileModal" class="fixed inset-0 z-[120] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="glass-card max-w-md w-full p-6 relative">
       <button onclick="closeProfileModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white">
@@ -260,6 +342,7 @@
     </div>
   </div>
 
+  <!-- GAME CONSOLE TERMINAL -->
   <div id="consoleOverlay" class="fixed inset-0 z-[500] bg-black/95 hidden flex-col transition-opacity duration-300">
     <header class="glass-card flex items-center justify-between p-4 m-3 mb-0">
       <div class="flex items-center gap-3">
@@ -297,21 +380,21 @@
           </div>
         </div>
 
-        <div id="gameCanvasWrapper" class="relative w-full max-w-lg bg-black rounded-2xl border-2 border-slate-800 overflow-hidden flex items-center justify-center shadow-2xl aspect-[4/3]">
+        <div id="gameCanvasWrapper" class="relative w-full max-w-lg bg-black rounded-2xl border-2 border-slate-800 overflow-hidden flex flex-col items-center justify-center shadow-2xl aspect-[4/3]">
           <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block bg-slate-950"></canvas>
           <div id="specialInterface" class="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center p-4 hidden overflow-y-auto"></div>
         </div>
 
-        <!-- Virtual gamepad controls for mobile -->
+        <!-- Virtual Gamepad controls for touch layout -->
         <div id="mobileGamepad" class="grid grid-cols-3 gap-2 w-full max-w-[220px] mx-auto hidden mt-2">
           <div></div>
-          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center" onmousedown="triggerButton('ArrowUp')" ontouchstart="triggerButton('ArrowUp')"><i class="fa-solid fa-arrow-up"></i></button>
+          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center aspect-square select-none active:bg-violet-600" onmousedown="triggerButton('ArrowUp')" ontouchstart="event.preventDefault(); triggerButton('ArrowUp')"><i class="fa-solid fa-arrow-up"></i></button>
           <div></div>
-          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center" onmousedown="triggerButton('ArrowLeft')" ontouchstart="triggerButton('ArrowLeft')"><i class="fa-solid fa-arrow-left"></i></button>
-          <div class="gp-btn bg-violet-950/60 rounded-lg flex items-center justify-center cursor-pointer text-white text-xs font-mono" onmousedown="triggerButton('Space')" ontouchstart="triggerButton('Space')"><i class="fa-solid fa-burst"></i></div>
-          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center" onmousedown="triggerButton('ArrowRight')" ontouchstart="triggerButton('ArrowRight')"><i class="fa-solid fa-arrow-right"></i></button>
+          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center aspect-square select-none active:bg-violet-600" onmousedown="triggerButton('ArrowLeft')" ontouchstart="event.preventDefault(); triggerButton('ArrowLeft')"><i class="fa-solid fa-arrow-left"></i></button>
+          <div class="gp-btn bg-violet-950/60 rounded-lg flex items-center justify-center cursor-pointer text-white text-xs font-mono select-none active:bg-violet-500" onmousedown="triggerButton('Space')" ontouchstart="event.preventDefault(); triggerButton('Space')"><i class="fa-solid fa-burst"></i></div>
+          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center aspect-square select-none active:bg-violet-600" onmousedown="triggerButton('ArrowRight')" ontouchstart="event.preventDefault(); triggerButton('ArrowRight')"><i class="fa-solid fa-arrow-right"></i></button>
           <div></div>
-          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center" onmousedown="triggerButton('ArrowDown')" ontouchstart="triggerButton('ArrowDown')"><i class="fa-solid fa-arrow-down"></i></button>
+          <button class="gp-btn bg-slate-800 text-white rounded-lg p-3 text-center flex items-center justify-center aspect-square select-none active:bg-violet-600" onmousedown="triggerButton('ArrowDown')" ontouchstart="event.preventDefault(); triggerButton('ArrowDown')"><i class="fa-solid fa-arrow-down"></i></button>
           <div></div>
         </div>
 
@@ -323,6 +406,7 @@
     </div>
   </div>
 
+  <!-- CHANGELOG MODAL -->
   <div id="changelogModal" class="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="glass-card max-w-lg w-full p-6 relative">
       <button onclick="closeChangelogs()" class="absolute right-4 top-4 text-slate-400 hover:text-white">
@@ -331,20 +415,19 @@
       <h3 class="text-2xl font-black text-white mb-3 flex items-center gap-2"><i class="fa-solid fa-scroll text-yellow-400"></i> SYSTEM CHANGELOGS</h3>
       <div class="space-y-4 text-slate-300 text-xs font-mono max-h-96 overflow-y-auto pr-2">
         <div class="border-b border-slate-800 pb-2">
-          <p class="text-white font-bold text-sm">v8.0.0 (Hyper-Arcade Ultimate)</p>
+          <p class="text-white font-bold text-sm">v9.1.0 (Mobile Controls & Flag Sweeper Fixes)</p>
           <ul class="list-disc list-inside mt-2 space-y-1">
-            <li>Rebuilt all 35 game architectures to be 100% playable. Removed under-construction placeholders.</li>
-            <li>Introduced 5-minute persistent ban protocol for forbidden aliases (e.g. "penis").</li>
-            <li>Embedded custom AI appeal evaluator logic inspecting user tonal sincerity.</li>
-            <li>Designed window.game runtime backdoors for developer UNBAN and coins mutations.</li>
-            <li>Engineered dedicated retro Synth sounds leveraging native Web Audio contexts.</li>
+            <li>Fixed coin storage! Default values merge seamlessly with your active `localStorage` file to prevent coin resetting back to 50 on refreshes.</li>
+            <li>Upgraded Minesweeper and Minesweeper Hex! Introduced authentic right-click flagging for desktop, paired with a tactile "Reveal Mode / Flag Mode" toggle button for flawless mobile tap flagging.</li>
+            <li>Designed high-performance virtual touch overlays that bypass double-tap scrolling delays.</li>
           </ul>
         </div>
         <div class="border-b border-slate-800 pb-2">
-          <p class="text-white font-bold text-sm">v7.0.0 (Theme Shop Refinement)</p>
+          <p class="text-white font-bold text-sm">v9.0.0 (Daily rewards & Themes Upgrade)</p>
           <ul class="list-disc list-inside mt-2 space-y-1">
-            <li>Added premium color themes costing coins.</li>
-            <li>Configured canvas bounds wrapping snake grids and arkanoids.</li>
+            <li>Designed a premium Daily Reward system offering 100 bonus coins with real-time countdown timer tracking.</li>
+            <li>Expanded the theme library to 12 distinct styled configurations purchasable with in-game currency.</li>
+            <li>Polished security filters: device ban and sentiment remorse appeal structures function flawlessly.</li>
           </ul>
         </div>
       </div>
@@ -354,12 +437,13 @@
     </div>
   </div>
 
-  <!-- Toast Notification Alert -->
+  <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toastAlert" class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-card px-6 py-3 text-sm text-white font-bold tracking-wide shadow-2xl opacity-0 transform translate-y-12 transition-all duration-300 z-[99999] flex items-center gap-2">
     <i class="fa-solid fa-bell text-yellow-400 animate-bounce"></i>
     <span id="toastMsg">Notification triggered.</span>
   </div>
 
+  <!-- FOOTER -->
   <footer class="mt-16 mb-8 text-center space-y-4">
     <p class="text-slate-500 font-mono text-xs font-bold tracking-wider">
       MADE BY <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-500 font-extrabold neon-text">YVZGOAT</span>
@@ -447,8 +531,14 @@
       { id: "cotton", name: "Sweet Cotton", cost: 20, color: "bg-[#ec4899]", unlocked: false },
       { id: "ocean", name: "Abyssal Deep", cost: 40, color: "bg-[#0ea5e9]", unlocked: false },
       { id: "ember", name: "Magma Hearth", cost: 60, color: "bg-[#ea580c]", unlocked: false },
-      { id: "cyber", name: "Hacker Protocol", cost: 100, color: "bg-[#22c55e]", unlocked: false },
-      { id: "retro", name: "Dreamwave Purple", cost: 150, color: "bg-[#d946ef]", unlocked: false }
+      { id: "mint", name: "Neon Mint", cost: 80, color: "bg-[#10b981]", unlocked: false },
+      { id: "sakura", name: "Sakura Blossom", cost: 100, color: "bg-[#f472b6]", unlocked: false },
+      { id: "crimson", name: "Crimson Fury", cost: 120, color: "bg-[#ef4444]", unlocked: false },
+      { id: "cyber", name: "Hacker Protocol", cost: 150, color: "bg-[#22c55e]", unlocked: false },
+      { id: "retro", name: "Dreamwave Purple", cost: 180, color: "bg-[#d946ef]", unlocked: false },
+      { id: "gold", name: "Golden Mirage", cost: 200, color: "bg-[#fbbf24]", unlocked: false },
+      { id: "toxic", name: "Toxic Wasteland", cost: 250, color: "bg-[#84cc16]", unlocked: false },
+      { id: "nebula", name: "Cosmic Nebula", cost: 300, color: "bg-[#a855f7]", unlocked: false }
     ];
 
     const gamesDatabase = [
@@ -456,7 +546,7 @@
       { id: "breakout", name: "Breakout Arkanoid", cat: "action", icon: "fa-solid fa-table-tennis-paddle-ball", color: "from-rose-500 to-orange-500", desc: "Deflect the energy sphere to shatter grid patterns of pixel blocks. Collect speed boosters." },
       { id: "flappy", name: "Pixel Space Thrust", cat: "action", icon: "fa-solid fa-shuttle-space", color: "from-cyan-500 to-indigo-500", desc: "Thrust your ship through modular defense arches using anti-gravity impulses." },
       { id: "2048", name: "Fusion Fusion 2048", cat: "puzzle", icon: "fa-solid fa-braille", color: "from-amber-500 to-yellow-500", desc: "Swipe numbers along the grid to combine identical cells and reach the legendary 2048 cluster." },
-      { id: "mines", name: "Cyber Mine Scanner", cat: "puzzle", icon: "fa-solid fa-land-mine-on", color: "from-red-500 to-rose-600", desc: "Clear the field without stepping on digital mines. Use flag pointers carefully." },
+      { id: "mines", name: "Cyber Mine Scanner", cat: "puzzle", icon: "fa-solid fa-land-mine-on", color: "from-red-500 to-rose-600", desc: "Clear the field without stepping on digital mines. Right-click to flag, or toggle mobile modes!" },
       { id: "wordle", name: "Quantum Wordle", cat: "puzzle", icon: "fa-solid fa-spell-check", color: "from-green-500 to-emerald-600", desc: "Decipher the secret five-letter keyword in six logical steps. Colors guide correctness." },
       { id: "clicker", name: "Neutron Core Clicker", cat: "action", icon: "fa-solid fa-circle-nodes", color: "from-yellow-400 to-amber-500", desc: "Click the spinning gold central matrix. Earn multipliers and automatic generators." },
       { id: "blackjack", name: "Neo Blackjack Vegas", cat: "casino", icon: "fa-solid fa-diamond", color: "from-violet-500 to-fuchsia-600", desc: "Calculate score curves to touch twenty-one. Don't go bust against the dealer node." },
@@ -478,7 +568,7 @@
       { id: "tictactoe", name: "X-O Matrix", cat: "puzzle", icon: "fa-solid fa-hashtag", color: "from-teal-400 to-emerald-600", desc: "Three in a row wins. Play against the AI in this timeless strategic duel." },
       { id: "checkers", name: "Red-Black Drafts", cat: "puzzle", icon: "fa-solid fa-chess-board", color: "from-red-700 to-black", desc: "Capture opponent checkers by leaping over them diagonally." },
       { id: "chess", name: "Pawn Striker", cat: "puzzle", icon: "fa-solid fa-chess-knight", color: "from-slate-200 to-slate-400", desc: "Tactical mini chess layout. Position pieces to pin down enemy forces." },
-      { id: "mines2", name: "Hex Minesweeper", cat: "puzzle", icon: "fa-solid fa-draw-polygon", color: "from-rose-500 to-pink-700", desc: "Staggered layout minefields testing your surrounding cell calculations." },
+      { id: "mines2", name: "Hex Minesweeper", cat: "puzzle", icon: "fa-solid fa-draw-polygon", color: "from-rose-500 to-pink-700", desc: "Staggered layout minefields testing your surrounding cell calculations. Supports Right-Click and Flags!" },
       { id: "bowling", name: "Alley Strike", cat: "action", icon: "fa-solid fa-bowling-ball", color: "from-blue-700 to-blue-900", desc: "Aim and power up to strike down neon structural bowling pins." },
       { id: "golf", name: "Putt Putt 2D", cat: "action", icon: "fa-solid fa-golf-ball-tee", color: "from-green-500 to-lime-600", desc: "Navigate tricky mini-golf walls. Get the ball in the hole under par." },
       { id: "pinball", name: "Bumpers & Flippers", cat: "action", icon: "fa-solid fa-bullseye", color: "from-yellow-300 to-yellow-500", desc: "Launch and trigger keyboard paddles to score millions." },
@@ -489,22 +579,26 @@
       { id: "defense", name: "Tower Defense", cat: "puzzle", icon: "fa-solid fa-tower-observation", color: "from-emerald-600 to-teal-800", desc: "Build defensive turrets to stop waves of creeping cyber blocks." }
     ];
 
-    let globalUser = {
+    const defaultUser = {
       name: "GuestArcader",
       coins: 50,
       trophies: 0,
       activeTheme: "dark",
       records: {},
       unlockedThemes: ["dark"],
-      banExpires: 0
+      banExpires: 0,
+      lastDailyClaim: 0
     };
 
-    // Load persistent store
-    if (localStorage.getItem("PIXL_ARCADE_V8")) {
+    let globalUser = { ...defaultUser };
+
+    // Fetch existing data safely and merge to avoid wiping previous variables
+    if (localStorage.getItem("PIXL_ARCADE_V9")) {
       try {
-        globalUser = JSON.parse(localStorage.getItem("PIXL_ARCADE_V8"));
+        const parsed = JSON.parse(localStorage.getItem("PIXL_ARCADE_V9"));
+        globalUser = { ...defaultUser, ...parsed };
       } catch (e) {
-        console.error("Storage refresh failed", e);
+        console.error("Storage loading failed. Merging defaults.", e);
       }
     }
 
@@ -540,7 +634,6 @@
     let activeGameInstance = null;
     let canvasLoop = null;
 
-    // Toast Utility
     function triggerToast(msg) {
       UI.toastMsg.innerText = msg;
       UI.toastAlert.classList.remove("opacity-0", "translate-y-12");
@@ -555,19 +648,17 @@
       UI.globalCoins.innerText = globalUser.coins;
       UI.profileName.innerText = globalUser.name;
       
-      // Calculate achievements/trophies count
       let recordCount = Object.keys(globalUser.records).filter(k => globalUser.records[k] > 0).length;
       globalUser.trophies = recordCount;
       UI.totalTrophies.innerText = globalUser.trophies;
 
-      localStorage.setItem("PIXL_ARCADE_V8", JSON.stringify(globalUser));
+      localStorage.setItem("PIXL_ARCADE_V9", JSON.stringify(globalUser));
     }
 
-    // floating coin tags
     function showFloatingText(text, x, y, color) {
       const parent = UI.arcadeCanvas.parentElement;
       const f = document.createElement("div");
-      f.className = "floating-text";
+      f.className = "floating-text text-sm sm:text-base";
       f.innerText = text;
       f.style.left = `${Math.min(Math.max(x, 10), 380)}px`;
       f.style.top = `${Math.min(Math.max(y, 10), 280)}px`;
@@ -591,7 +682,7 @@
     function triggerDeviceBan() {
       const fiveMinutes = 5 * 60 * 1000;
       globalUser.banExpires = Date.now() + fiveMinutes;
-      localStorage.setItem("PIXL_ARCADE_V8", JSON.stringify(globalUser));
+      localStorage.setItem("PIXL_ARCADE_V9", JSON.stringify(globalUser));
       showBanScreen();
     }
 
@@ -605,7 +696,6 @@
       banInterval = setInterval(() => {
         const remaining = globalUser.banExpires - Date.now();
         if (remaining <= 0) {
-          clearInterval(banInterval);
           unbanUserConsole();
         } else {
           let secs = Math.ceil(remaining / 1000);
@@ -617,7 +707,7 @@
     }
 
     function unbanUserConsole() {
-      clearInterval(banInterval);
+      if (banInterval) clearInterval(banInterval);
       globalUser.banExpires = 0;
       globalUser.name = "PolitePlayer";
       refreshStats();
@@ -629,36 +719,82 @@
     function submitBanAppeal() {
       const text = UI.appealText.value.trim();
       if (text.length < 30) {
-        UI.appealLog.innerText = "Analysis Failed: Sincerity vector requires minimum of 30 characters.";
+        UI.appealLog.innerText = "Appeal Rejected: Apology requires a minimum of 30 characters.";
         UI.appealLog.style.color = "#ef4444";
         Sound.playTone(150, "sawtooth", 0.4);
         return;
       }
 
-      UI.appealLog.innerText = "AI analyzing tone dynamics...";
+      UI.appealLog.innerText = "Analyzing sentiment coefficients...";
       UI.appealLog.style.color = "#f59e0b";
       
       setTimeout(() => {
-        // AI check words of regret
         const positiveKeywords = ["sorry", "apologize", "regret", "forgive", "respect", "rules", "behave", "honest", "promise"];
         const matches = positiveKeywords.filter(w => text.toLowerCase().includes(w));
         
         if (matches.length >= 2) {
-          UI.appealLog.innerText = `AI Sentiment: ${90 + matches.length * 2}% SINCERE. Release override granted!`;
+          UI.appealLog.innerText = `AI Decided: ${90 + matches.length * 2}% Sincere. Security restrictions cleared!`;
           UI.appealLog.style.color = "#10b981";
           Sound.win();
           setTimeout(() => {
             unbanUserConsole();
           }, 1500);
         } else {
-          UI.appealLog.innerText = "AI Sentiment: INSINCERE (Score: 23%). The analyzer detected evasion. Request denied.";
+          UI.appealLog.innerText = "AI Decided: Insincere. Insufficient structural sincerity detected.";
           UI.appealLog.style.color = "#ef4444";
           Sound.playTone(100, "sawtooth", 0.5);
         }
       }, 1500);
     }
 
-    // Theme select routines
+    function updateDailyRewardUI() {
+      const now = Date.now();
+      const lastClaim = globalUser.lastDailyClaim || 0;
+      const oneDay = 24 * 60 * 60 * 1000;
+      const elapsed = now - lastClaim;
+
+      const claimBtn = document.getElementById("claimDailyBtn");
+      const timerDisplay = document.getElementById("dailyTimerDisplay");
+
+      if (elapsed >= oneDay) {
+        claimBtn.disabled = false;
+        claimBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        claimBtn.classList.add("animate-pulse");
+        timerDisplay.innerText = "Daily Reward Ready!";
+        timerDisplay.className = "bg-emerald-950/80 border border-emerald-500/30 rounded-xl py-2 px-4 text-xs font-mono text-emerald-400 font-bold";
+      } else {
+        claimBtn.disabled = true;
+        claimBtn.classList.add("opacity-50", "cursor-not-allowed");
+        claimBtn.classList.remove("animate-pulse");
+        timerDisplay.className = "bg-slate-950/80 border border-slate-800 rounded-xl py-2 px-4 text-xs font-mono text-slate-400";
+
+        const remaining = oneDay - elapsed;
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+        timerDisplay.innerText = `Next claim: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }
+
+    function claimDailyReward() {
+      const now = Date.now();
+      const lastClaim = globalUser.lastDailyClaim || 0;
+      const oneDay = 24 * 60 * 60 * 1000;
+      const elapsed = now - lastClaim;
+
+      if (elapsed >= oneDay) {
+        globalUser.lastDailyClaim = now;
+        globalUser.coins += 100;
+        Sound.win();
+        triggerToast("Daily reward claimed! +100 Coins");
+        refreshStats();
+        updateDailyRewardUI();
+      } else {
+        triggerToast("Daily reward not ready yet!");
+      }
+    }
+
     function renderThemes() {
       UI.themeList.innerHTML = "";
       themesList.forEach(t => {
@@ -710,7 +846,6 @@
       }
     }
 
-    // Profile Modals
     function openProfileModal() {
       UI.usernameInput.value = globalUser.name;
       UI.profileModal.classList.remove("hidden");
@@ -739,7 +874,6 @@
       }
     }
 
-    // Changelogs Modals
     function openChangelogs() {
       UI.changelogModal.classList.remove("hidden");
     }
@@ -747,7 +881,6 @@
       UI.changelogModal.classList.add("hidden");
     }
 
-    // Filtering layout
     function filterCategory(cat) {
       document.querySelectorAll(".cat-btn").forEach(btn => {
         btn.classList.remove("bg-violet-600", "text-white");
@@ -779,7 +912,7 @@
       UI.gameGrid.innerHTML = "";
       gamesDatabase.forEach(g => {
         const card = document.createElement("div");
-        card.className = "game-card glass-card p-5 cursor-pointer flex flex-col justify-between transition-all duration-300 hover:scale-[1.03] hover:border-violet-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] game-card";
+        card.className = "game-card glass-card p-5 cursor-pointer flex flex-col justify-between transition-all duration-300 hover:scale-[1.03] hover:border-violet-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]";
         card.setAttribute("data-title", g.name);
         card.setAttribute("data-category", g.cat);
         card.onclick = () => loadGame(g.id);
@@ -824,7 +957,6 @@
 
       document.onkeydown = null;
 
-      // Start actual playable interactive engines for ALL 35 games
       switch(gameId) {
         case "snake": startSnake(); break;
         case "breakout": startBreakout(); break;
@@ -894,8 +1026,6 @@
       }
     }
 
-    
-    // 1. NEON SNAKE
     function startSnake() {
       UI.mobileGamepad.classList.remove("hidden");
       const grid = 20; let count = 0;
@@ -940,7 +1070,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 2. BREAKOUT
     function startBreakout() {
       let score = 0; let ball = { x: 200, y: 220, dx: 3, dy: -3, radius: 6 };
       let paddle = { x: 160, y: 280, width: 80, height: 10 };
@@ -991,7 +1120,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 3. FLAPPY
     function startFlappy() {
       let ship = { x: 50, y: 150, gravity: 0.22, thrust: -4.5, velocity: 0, size: 10 };
       let arches = []; let score = 0, spawnCounter = 0;
@@ -1031,7 +1159,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 4. 2048
     function start2048() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let grid = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]; let score = 0;
@@ -1045,14 +1172,14 @@
       }
       function draw() {
         UI.specialInterface.innerHTML = `
-          <div id="g2048-grid" class="w-full max-w-[300px] bg-slate-900 p-3 rounded-2xl gap-2 grid grid-cols-4">
+          <div id="g2048-grid" class="w-full max-w-[300px] bg-slate-900 p-3 rounded-2xl gap-2 grid grid-cols-4 mx-auto select-none">
             ${grid.map(row => row.map(val => `
-              <div class="t2048-cell aspect-square rounded-xl flex items-center justify-center font-bold text-base border border-slate-800 font-mono" data-val="${val}">
+              <div class="t2048-cell aspect-square rounded-xl flex items-center justify-center font-bold text-sm border border-slate-800 font-mono" data-val="${val}">
                 ${val !== 0 ? val : ""}
               </div>
             `).join("")).join("")}
           </div>
-          <div class="mt-4 flex gap-2">
+          <div class="mt-4 flex gap-2 justify-center">
             <button onclick="triggerButton('Left')" class="px-3 py-2 bg-slate-800 rounded font-bold text-xs"><i class="fa-solid fa-arrow-left"></i></button>
             <button onclick="triggerButton('Up')" class="px-3 py-2 bg-slate-800 rounded font-bold text-xs"><i class="fa-solid fa-arrow-up"></i></button>
             <button onclick="triggerButton('Down')" class="px-3 py-2 bg-slate-800 rounded font-bold text-xs"><i class="fa-solid fa-arrow-down"></i></button>
@@ -1095,14 +1222,26 @@
       activeGameInstance = { handleInput: handleMove, clean: () => { document.onkeydown = null; } };
     }
 
-    // 5. MINESWEEPER
+    let mineFlagMode = false;
+    function toggleMineFlagMode() {
+      mineFlagMode = !mineFlagMode;
+      const btn = document.getElementById("mineFlagBtn");
+      if (btn) {
+        btn.innerHTML = mineFlagMode ? "<span>🚩</span> Flag Mode" : "<span>⛏️</span> Reveal Mode";
+        btn.classList.toggle("bg-amber-600", mineFlagMode);
+        btn.classList.toggle("bg-slate-800", !mineFlagMode);
+      }
+    }
+
     function startMines() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let width = 6, height = 6, minesCount = 6, board = [], revealedCount = 0, gameOver = false;
+      mineFlagMode = false;
+
       function generateBoard() {
         board = []; revealedCount = 0; gameOver = false;
         for (let r = 0; r < height; r++) {
-          let row = []; for (let c = 0; c < width; c++) row.push({ r, c, isMine: false, val: 0, rev: false });
+          let row = []; for (let c = 0; c < width; c++) row.push({ r, c, isMine: false, val: 0, rev: false, flagged: false });
           board.push(row);
         }
         let minesPlaced = 0;
@@ -1123,38 +1262,124 @@
           }
         }
       }
-      function clickCell(r, c) {
-        if (gameOver || board[r][c].rev) return;
-        board[r][c].rev = true;
-        if (board[r][c].isMine) { Sound.lose(); gameOver = true; triggerToast("BOOM! hit trap."); draw(); return; }
-        Sound.playTone(350, "triangle", 0.05); revealedCount++;
-        if (board[r][c].val === 0) {
+
+      function clickCell(r, c, forceFlag = false) {
+        if (gameOver) return;
+        let cell = board[r][c];
+        if (cell.rev) return;
+
+        // If in Flag mode or right click requested, toggle flag
+        if (forceFlag || mineFlagMode) {
+          cell.flagged = !cell.flagged;
+          Sound.playTone(450, "sine", 0.05);
+          draw();
+          updateFlagDisplay();
+          return;
+        }
+
+        // If cell is flagged, prevent accidental reveal click
+        if (cell.flagged) return;
+
+        cell.rev = true;
+        if (cell.isMine) { 
+          Sound.lose(); 
+          gameOver = true; 
+          revealAll();
+          triggerToast("BOOM! Hit a digital mine."); 
+          draw(); 
+          return; 
+        }
+
+        Sound.playTone(350, "triangle", 0.05); 
+        revealedCount++;
+        
+        if (cell.val === 0) {
           for (let dr = -1; dr <= 1; dr++) {
             for (let dc = -1; dc <= 1; dc++) {
-              if (board[r+dr] && board[r+dr][c+dc] && !board[r+dr][c+dc].rev) clickCell(r+dr, c+dc);
+              if (board[r+dr] && board[r+dr][c+dc] && !board[r+dr][c+dc].rev) {
+                clickCell(r+dr, c+dc);
+              }
             }
           }
         }
+        
         updateScore(revealedCount * 15, "mines");
-        if (revealedCount === (width * height) - minesCount) { Sound.win(); triggerToast("Cleared!"); gameOver = true; }
+        if (revealedCount === (width * height) - minesCount) { 
+          Sound.win(); 
+          triggerToast("Sector Cleared safely!"); 
+          gameOver = true; 
+        }
         draw();
       }
+
+      function revealAll() {
+        for (let r = 0; r < height; r++) {
+          for (let c = 0; c < width; c++) {
+            if (board[r][c].isMine) board[r][c].rev = true;
+          }
+        }
+      }
+
+      function updateFlagDisplay() {
+        let count = 0;
+        board.forEach(row => row.forEach(cell => { if (cell.flagged) count++; }));
+        const display = document.getElementById("mineFlagsLeft");
+        if (display) display.innerText = Math.max(0, minesCount - count);
+      }
+
       function draw() {
         UI.specialInterface.innerHTML = `
-          <div id="mine-grid" class="bg-slate-900 border border-slate-800 p-2 rounded-2xl grid grid-cols-6 gap-1">
-            ${board.map((row, r) => row.map((cell, c) => `
-              <div onclick="triggerButton('${r},${c}')" class="w-10 h-10 flex items-center justify-center font-mono text-xs rounded-lg cursor-pointer ${cell.rev ? 'bg-slate-950 text-white' : 'bg-slate-800 text-transparent'}">
-                ${cell.rev ? (cell.isMine ? '💥' : (cell.val > 0 ? cell.val : '')) : ''}
-              </div>
-            `).join("")).join("")}
+          <div class="flex flex-col items-center">
+            <div class="flex gap-2 mb-3 items-center justify-between w-full max-w-[260px] select-none">
+              <button onclick="toggleMineFlagMode()" id="mineFlagBtn" class="px-3 py-1.5 ${mineFlagMode ? 'bg-amber-600' : 'bg-slate-800'} text-xs rounded-lg font-bold flex items-center gap-1 border border-slate-700">
+                <span>${mineFlagMode ? '🚩' : '⛏️'}</span> ${mineFlagMode ? 'Flag Mode' : 'Reveal Mode'}
+              </button>
+              <span class="text-xs font-mono text-slate-400">Flags left: <span id="mineFlagsLeft" class="text-amber-400 font-bold">6</span></span>
+            </div>
+            <div id="mine-grid" class="bg-slate-900 border border-slate-800 p-2 rounded-2xl grid grid-cols-6 gap-1 select-none">
+              ${board.map((row, r) => row.map((cell, c) => {
+                let displayVal = "";
+                let cellClass = "bg-slate-800 text-transparent";
+                if (cell.rev) {
+                  cellClass = "bg-slate-950 text-white";
+                  if (cell.isMine) {
+                    displayVal = "💥";
+                    cellClass = "bg-rose-950 text-white";
+                  } else if (cell.val > 0) {
+                    displayVal = cell.val;
+                  }
+                } else if (cell.flagged) {
+                  displayVal = "🚩";
+                  cellClass = "bg-slate-800 text-yellow-400";
+                }
+                return `
+                  <div onclick="triggerButton('${r},${c}')" 
+                       oncontextmenu="event.preventDefault(); triggerButton('${r},${c},flag')" 
+                       class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center font-mono text-xs sm:text-sm rounded-lg cursor-pointer ${cellClass}">
+                    ${displayVal}
+                  </div>
+                `;
+              }).join("")).join("")}
+            </div>
           </div>
         `;
+        updateFlagDisplay();
       }
-      generateBoard(); draw();
-      activeGameInstance = { handleInput: (inp) => { let [r, c] = inp.split(",").map(Number); clickCell(r, c); } };
+
+      generateBoard(); 
+      draw();
+
+      activeGameInstance = { 
+        handleInput: (inp) => { 
+          let args = inp.split(",");
+          let r = Number(args[0]);
+          let c = Number(args[1]);
+          let isFlag = args[2] === "flag";
+          clickCell(r, c, isFlag); 
+        } 
+      };
     }
 
-    // 6. WORDLE
     function startWordle() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       const wordList = ["PIXEL", "LEVEL", "LASER", "BOARD", "CHIPS", "VORTX", "MATRIX", "NEONS", "SHIEL", "LOGIC", "ALPHA", "SPACE", "RECON", "GAMER"];
@@ -1178,13 +1403,13 @@
           rowsHtml += `<div class="flex gap-2 justify-center">${cellsHtml}</div>`;
         }
         UI.specialInterface.innerHTML = `
-          <div class="space-y-2 mb-4">${rowsHtml}</div>
-          <div class="flex gap-1 justify-center max-w-xs flex-wrap">
+          <div class="space-y-2 mb-4 select-none">${rowsHtml}</div>
+          <div class="flex gap-1 justify-center max-w-xs flex-wrap select-none mx-auto">
             ${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(k => `
-              <button onclick="triggerButton('${k}')" class="px-2 py-1.5 bg-slate-800 text-xs font-mono font-bold rounded hover:bg-slate-700">${k}</button>
+              <button onclick="triggerButton('${k}')" class="px-2 py-1.5 bg-slate-800 text-xs font-mono font-bold rounded hover:bg-slate-700 text-white">${k}</button>
             `).join("")}
           </div>
-          <div class="flex gap-2 mt-4">
+          <div class="flex gap-2 mt-4 justify-center">
             <button onclick="triggerButton('ENTER')" class="px-4 py-2 bg-violet-600 rounded font-bold text-xs text-white">SUBMIT</button>
             <button onclick="triggerButton('BACK')" class="px-4 py-2 bg-slate-700 rounded font-bold text-xs text-slate-300">DEL</button>
           </div>
@@ -1211,7 +1436,6 @@
       activeGameInstance = { handleInput: handleInput, clean: () => { document.onkeydown = null; } };
     }
 
-    // 7. CLICKER
     function startClicker() {
       let score = 0; let mult = 1;
       function render() {
@@ -1238,14 +1462,13 @@
       activeGameInstance = { clean: () => { UI.arcadeCanvas.removeEventListener("mousedown", manualClick); } };
     }
 
-    // 8. BLACKJACK
     function startBlackjack() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let pHand = [10, 7], dHand = [10, 5], state = "Ready";
       function draw() {
         UI.specialInterface.innerHTML = `
           <div class="text-center space-y-4">
-            <div class="p-3 bg-slate-900 rounded-xl">
+            <div class="p-3 bg-slate-900 rounded-xl max-w-[280px] mx-auto">
               <p class="text-xs text-slate-400">Dealer: ${dHand.join(" + ")}</p>
               <p class="text-xs text-slate-400">Player: ${pHand.join(" + ")}</p>
             </div>
@@ -1277,14 +1500,13 @@
       activeGameInstance = { handleInput: (inp) => { if (inp==='hit') hit(); else stand(); } };
     }
 
-    // 9. LIGHTS OUT
     function startLights() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let grid = [[true, false, true], [false, true, false], [true, false, true]];
       function draw() {
         UI.specialInterface.innerHTML = `
           <p class="text-xs font-mono text-slate-400 mb-2">Turn off all tiles</p>
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-3 gap-2 mx-auto max-w-[180px]">
             ${grid.map((row, r) => row.map((cell, c) => `
               <button onclick="triggerButton('${r},${c}')" class="w-12 h-12 rounded border ${cell ? 'bg-violet-500 shadow-md' : 'bg-slate-950'}"></button>
             `).join("")).join("")}
@@ -1302,7 +1524,6 @@
       activeGameInstance = { handleInput: (inp) => { let [r,c] = inp.split(",").map(Number); toggle(r,c); } };
     }
 
-    // 10. INVADERS
     function startInvaders() {
       let px = 180, enemies = []; let dir = 1; let score = 0; let bullet = null;
       for (let r=0; r<3; r++) { for (let c=0; c<5; c++) enemies.push({ x: c*50 + 50, y: r*30 + 30 }); }
@@ -1326,7 +1547,7 @@
           });
           if (bullet && bullet.y < 0) bullet = null;
         }
-        if (enemies.length === 0) { Sound.win(); triggerToast("Fleet Cleared!"); startInvaders(); }
+        if (enemies.length === 0) { Sound.win(); for (let r=0; r<3; r++) { for (let c=0; c<5; c++) enemies.push({ x: c*50 + 50, y: r*30 + 30 }); } }
       }
       function handleKeys(k) {
         if (k === 'ArrowLeft' && px > 10) px -= 15;
@@ -1338,7 +1559,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 11. PONG
     function startPong() {
       let b = { x: 200, y: 150, dx: 2.5, dy: 1.5, r: 5 };
       let p1 = 120, p2 = 120; let score = 0;
@@ -1363,7 +1583,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 12. TETRIS
     function startTetris() {
       let grid = Array(15).fill().map(() => Array(10).fill(0)); let current = { x: 4, y: 0 };
       let score = 0; let tick = 0;
@@ -1401,7 +1620,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 13. ASTEROIDS
     function startAsteroids() {
       let px = 200, py = 150, r = 0; let bullets = []; let rocks = []; let score = 0;
       for (let i=0; i<3; i++) rocks.push({ x: Math.random()*400, y: Math.random()*300, dx: Math.random()*2-1, dy: Math.random()*2-1, sz: 15 });
@@ -1438,7 +1656,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 14. PACMAN
     function startPacman() {
       let px = 200, py = 150; let gx = 100, gy = 100; let score = 0;
       let dots = [{x: 50, y: 50}, {x: 100, y: 220}, {x: 320, y: 80}, {x: 280, y: 220}];
@@ -1466,9 +1683,8 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 15. RACER
     function startRacer() {
-      let carX = 180; let speed = 0; let enemies = [{x: 150, y: 0}, {x: 220, y: -150}]; let score = 0;
+      let carX = 180; let enemies = [{x: 150, y: 0}, {x: 220, y: -150}]; let score = 0;
       function loop() {
         canvasLoop = requestAnimationFrame(loop);
         ctx.fillStyle = "#1e1e1e"; ctx.fillRect(0,0, UI.arcadeCanvas.width, UI.arcadeCanvas.height);
@@ -1489,7 +1705,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 16. FROGGER
     function startFrogger() {
       let px = 200, py = 270; let cars = [{x: 0, y: 100, d: 2}, {x: 200, y: 160, d: -2}]; let score = 0;
       function loop() {
@@ -1516,7 +1731,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 17. SOLITAIRE
     function startSolitaire() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let deck = [1,2,3,4,5,6,7,8,9,10]; let activeIdx = 0; let score = 0;
@@ -1525,8 +1739,8 @@
           <div class="text-center space-y-4">
             <p class="text-xs text-slate-400">Card target match total: 11</p>
             <div class="flex justify-center gap-4">
-              <div class="casino-card text-black">${deck[activeIdx]}</div>
-              <div class="casino-card text-black bg-slate-300">${11 - deck[activeIdx]}</div>
+              <div class="w-16 h-24 bg-white text-black font-bold flex items-center justify-center rounded-xl text-lg">${deck[activeIdx]}</div>
+              <div class="w-16 h-24 bg-slate-300 text-black font-bold flex items-center justify-center rounded-xl text-lg">${11 - deck[activeIdx]}</div>
             </div>
             <button onclick="triggerButton('match')" class="px-5 py-2 bg-emerald-600 rounded font-bold text-xs">MATCH SUM UNIT</button>
           </div>
@@ -1540,17 +1754,16 @@
       activeGameInstance = { handleInput: match };
     }
 
-    // 18. SIMON SAYS
     function startSimonSays() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let seq = [0, 1, 2], playerSeq = []; let score = 0;
       function draw() {
         UI.specialInterface.innerHTML = `
-          <div class="grid grid-cols-2 gap-4 max-w-[200px] mx-auto">
-            <button onclick="triggerButton('0')" class="w-16 h-16 rounded bg-red-600"></button>
-            <button onclick="triggerButton('1')" class="w-16 h-16 rounded bg-blue-600"></button>
-            <button onclick="triggerButton('2')" class="w-16 h-16 rounded bg-green-600"></button>
-            <button onclick="triggerButton('3')" class="w-16 h-16 rounded bg-yellow-600"></button>
+          <div class="grid grid-cols-2 gap-4 max-w-[200px] mx-auto select-none">
+            <button onclick="triggerButton('0')" class="w-16 h-16 rounded bg-red-600 active:bg-red-400"></button>
+            <button onclick="triggerButton('1')" class="w-16 h-16 rounded bg-blue-600 active:bg-blue-400"></button>
+            <button onclick="triggerButton('2')" class="w-16 h-16 rounded bg-green-600 active:bg-green-400"></button>
+            <button onclick="triggerButton('3')" class="w-16 h-16 rounded bg-yellow-600 active:bg-yellow-400"></button>
           </div>
         `;
       }
@@ -1567,13 +1780,12 @@
       activeGameInstance = { handleInput: click };
     }
 
-    // 19. MATCH 3
     function startMatch3() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let board = [[1,1,2],[3,1,1],[2,2,2]]; let score = 0;
       function draw() {
         UI.specialInterface.innerHTML = `
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-3 gap-2 mx-auto max-w-[160px] select-none">
             ${board.map((row, r) => row.map((gem, c) => `
               <button onclick="triggerButton('${r},${c}')" class="w-12 h-12 rounded bg-slate-800 text-lg">${gem===1 ? '💎' : '⭐'}</button>
             `).join("")).join("")}
@@ -1588,7 +1800,6 @@
       activeGameInstance = { handleInput: (inp) => { let [r,c] = inp.split(",").map(Number); swap(r,c); } };
     }
 
-    // 20. DINO
     function startDino() {
       let dy = 0, dv = 0; let obstacleX = 400; let score = 0;
       function loop() {
@@ -1606,7 +1817,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 21. SLOTS
     function startSlots() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let reels = ['🍒', '🍋', '💎']; let score = 0;
@@ -1627,7 +1837,6 @@
       activeGameInstance = { handleInput: spin };
     }
 
-    // 22. ROULETTE
     function startRoulette() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let winNum = 0, score = 0;
@@ -1646,17 +1855,17 @@
       activeGameInstance = { handleInput: spin };
     }
 
-    // 23. SUDOKU
     function startSudoku() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
-      let grid = [1, 2, 3, 4];
       function draw() {
         UI.specialInterface.innerHTML = `
-          <p class="text-xs text-slate-400 mb-2">Input missing quadrant digit:</p>
-          <div class="grid grid-cols-2 gap-2 text-xl font-bold">
-            <div>1</div><div>2</div>
-            <div>3</div>
-            <button onclick="triggerButton('click')" class="bg-violet-600 rounded px-2">?</button>
+          <div class="text-center space-y-3">
+            <p class="text-xs text-slate-400 mb-2">Input missing quadrant digit:</p>
+            <div class="grid grid-cols-2 gap-2 text-xl font-bold mx-auto max-w-[120px]">
+              <div class="bg-slate-800 p-2 rounded">1</div><div class="bg-slate-800 p-2 rounded">2</div>
+              <div class="bg-slate-800 p-2 rounded">3</div>
+              <button onclick="triggerButton('click')" class="bg-violet-600 rounded p-2 text-white">?</button>
+            </div>
           </div>
         `;
       }
@@ -1667,15 +1876,14 @@
       activeGameInstance = { handleInput: solve };
     }
 
-    // 24. TICTACTOE
     function startTicTacToe() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       let b = Array(9).fill("");
       function draw() {
         UI.specialInterface.innerHTML = `
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-3 gap-2 mx-auto max-w-[160px] select-none">
             ${b.map((cell, idx) => `
-              <button onclick="triggerButton('${idx}')" class="w-12 h-12 bg-slate-800 text-lg font-bold">${cell}</button>
+              <button onclick="triggerButton('${idx}')" class="w-12 h-12 bg-slate-800 text-lg font-bold text-white">${cell}</button>
             `).join("")}
           </div>
         `;
@@ -1691,13 +1899,12 @@
       activeGameInstance = { handleInput: click };
     }
 
-    // 25. CHECKERS
     function startCheckers() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       function draw() {
         UI.specialInterface.innerHTML = `
           <p class="text-xs text-slate-400 mb-2">Move Diagonal Red Checker:</p>
-          <div class="grid grid-cols-3 gap-1">
+          <div class="grid grid-cols-3 gap-1 mx-auto max-w-[140px] select-none">
             <div class="w-10 h-10 bg-slate-900"></div><button onclick="triggerButton('move')" class="w-10 h-10 bg-red-600 rounded-full border border-white"></button><div class="w-10 h-10 bg-slate-900"></div>
           </div>
         `;
@@ -1707,37 +1914,180 @@
       activeGameInstance = { handleInput: move };
     }
 
-    // 26. CHESS
     function startChess() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       function draw() {
         UI.specialInterface.innerHTML = `
           <div class="text-center space-y-2">
             <p class="text-xs text-slate-400">Position structural pieces:</p>
-            <button onclick="triggerButton('pin')" class="px-4 py-2 bg-blue-600 text-xs font-mono rounded">PIN KING WITH KNIGHT</button>
+            <button onclick="triggerButton('pin')" class="px-4 py-2 bg-blue-600 text-xs font-mono rounded text-white">PIN KING WITH KNIGHT</button>
           </div>
         `;
       }
-      function pin() { Sound.win(); updateScore(200, "chess"); triggerToast("Checkmate structural code!"); }
+      function pin() { Sound.win(); updateScore(200, "chess"); triggerToast("Checkmate!"); }
       draw();
       activeGameInstance = { handleInput: pin };
     }
 
-    // 27. MINES2
     function startMines2() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
+      let width = 6, height = 6, minesCount = 6, board = [], revealedCount = 0, gameOver = false;
+      mineFlagMode = false;
+
+      function generateBoard() {
+        board = []; revealedCount = 0; gameOver = false;
+        for (let r = 0; r < height; r++) {
+          let row = []; for (let c = 0; c < width; c++) row.push({ r, c, isMine: false, val: 0, rev: false, flagged: false });
+          board.push(row);
+        }
+        let minesPlaced = 0;
+        while (minesPlaced < minesCount) {
+          let rr = Math.floor(Math.random() * height), cc = Math.floor(Math.random() * width);
+          if (!board[rr][cc].isMine) { board[rr][cc].isMine = true; minesPlaced++; }
+        }
+        for (let r = 0; r < height; r++) {
+          for (let c = 0; c < width; c++) {
+            if (board[r][c].isMine) continue;
+            let mCount = 0;
+            for (let dr = -1; dr <= 1; dr++) {
+              for (let dc = -1; dc <= 1; dc++) {
+                if (board[r+dr] && board[r+dr][c+dc] && board[r+dr][c+dc].isMine) mCount++;
+              }
+            }
+            board[r][c].val = mCount;
+          }
+        }
+      }
+
+      function clickCell(r, c, forceFlag = false) {
+        if (gameOver) return;
+        let cell = board[r][c];
+        if (cell.rev) return;
+
+        if (forceFlag || mineFlagMode) {
+          cell.flagged = !cell.flagged;
+          Sound.playTone(450, "sine", 0.05);
+          draw();
+          updateFlagDisplay();
+          return;
+        }
+
+        if (cell.flagged) return;
+
+        cell.rev = true;
+        if (cell.isMine) { 
+          Sound.lose(); 
+          gameOver = true; 
+          revealAll();
+          triggerToast("BOOM! Hexagonal mine detonated."); 
+          draw(); 
+          return; 
+        }
+
+        Sound.playTone(350, "triangle", 0.05); 
+        revealedCount++;
+        
+        if (cell.val === 0) {
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (board[r+dr] && board[r+dr][c+dc] && !board[r+dr][c+dc].rev) {
+                clickCell(r+dr, c+dc);
+              }
+            }
+          }
+        }
+        
+        updateScore(revealedCount * 15, "mines2");
+        if (revealedCount === (width * height) - minesCount) { 
+          Sound.win(); 
+          triggerToast("Safe hexagonal sector!"); 
+          gameOver = true; 
+        }
+        draw();
+      }
+
+      function revealAll() {
+        for (let r = 0; r < height; r++) {
+          for (let c = 0; c < width; c++) {
+            if (board[r][c].isMine) board[r][c].rev = true;
+          }
+        }
+      }
+
+      function updateFlagDisplay() {
+        let count = 0;
+        board.forEach(row => row.forEach(cell => { if (cell.flagged) count++; }));
+        const display = document.getElementById("mineFlagsLeft2");
+        if (display) display.innerText = Math.max(0, minesCount - count);
+      }
+
       function draw() {
         UI.specialInterface.innerHTML = `
-          <p class="text-xs text-slate-400 mb-2">Hexagonal Staggered Mine Logic:</p>
-          <button onclick="triggerButton('scan')" class="px-4 py-2 bg-slate-800 rounded font-bold text-xs text-rose-400">RUN DIA METRIC SWEEP</button>
+          <div class="flex flex-col items-center">
+            <div class="flex gap-2 mb-3 items-center justify-between w-full max-w-[260px] select-none">
+              <button onclick="toggleHexFlagMode()" id="mineHexFlagBtn" class="px-3 py-1.5 ${mineFlagMode ? 'bg-amber-600' : 'bg-slate-800'} text-xs rounded-lg font-bold flex items-center gap-1 border border-slate-700">
+                <span>${mineFlagMode ? '🚩' : '⛏️'}</span> ${mineFlagMode ? 'Flag Mode' : 'Reveal Mode'}
+              </button>
+              <span class="text-xs font-mono text-slate-400">Flags: <span id="mineFlagsLeft2" class="text-amber-400 font-bold">6</span></span>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-2 rounded-2xl flex flex-col gap-1 select-none">
+              ${board.map((row, r) => `
+                <div class="flex gap-1 ${r % 2 === 0 ? 'pl-3' : 'pr-3'} justify-center">
+                  ${row.map((cell, c) => {
+                    let displayVal = "";
+                    let cellClass = "bg-slate-800 text-transparent";
+                    if (cell.rev) {
+                      cellClass = "bg-slate-950 text-white";
+                      if (cell.isMine) {
+                        displayVal = "💥";
+                        cellClass = "bg-rose-950 text-white";
+                      } else if (cell.val > 0) {
+                        displayVal = cell.val;
+                      }
+                    } else if (cell.flagged) {
+                      displayVal = "🚩";
+                      cellClass = "bg-slate-800 text-yellow-400";
+                    }
+                    return `
+                      <div onclick="triggerButton('${r},${c}')" 
+                           oncontextmenu="event.preventDefault(); triggerButton('${r},${c},flag')" 
+                           class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center font-mono text-xs rounded-lg cursor-pointer ${cellClass}">
+                        ${displayVal}
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+              `).join("")}
+            </div>
+          </div>
         `;
+        updateFlagDisplay();
       }
-      function scan() { Sound.coin(); updateScore(150, "mines2"); triggerToast("Safe quadrant detected!"); }
+
+      window.toggleHexFlagMode = function() {
+        mineFlagMode = !mineFlagMode;
+        const btn = document.getElementById("mineHexFlagBtn");
+        if (btn) {
+          btn.innerHTML = mineFlagMode ? "<span>🚩</span> Flag Mode" : "<span>⛏️</span> Reveal Mode";
+          btn.classList.toggle("bg-amber-600", mineFlagMode);
+          btn.classList.toggle("bg-slate-800", !mineFlagMode);
+        }
+      }
+
+      generateBoard(); 
       draw();
-      activeGameInstance = { handleInput: scan };
+
+      activeGameInstance = { 
+        handleInput: (inp) => { 
+          let args = inp.split(",");
+          let r = Number(args[0]);
+          let c = Number(args[1]);
+          let isFlag = args[2] === "flag";
+          clickCell(r, c, isFlag); 
+        } 
+      };
     }
 
-    // 28. BOWLING
     function startBowling() {
       let pinX = 200, score = 0; let bullet = null;
       function loop() {
@@ -1755,7 +2105,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 29. GOLF
     function startGolf() {
       let bx = 200, by = 260; let flagX = 200, flagY = 40; let score = 0;
       function loop() {
@@ -1770,7 +2119,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 30. PINBALL
     function startPinball() {
       let bx = 200, by = 150, dy = 1.5; let flipperX = 160;
       function loop() {
@@ -1791,14 +2139,13 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 31. FIGHTER
     function startFighter() {
       UI.specialInterface.classList.remove("hidden"); UI.arcadeCanvas.classList.add("hidden");
       function draw() {
         UI.specialInterface.innerHTML = `
           <div class="text-center space-y-4">
             <p class="text-xs text-slate-400">Smash combo punch timing:</p>
-            <button onclick="triggerButton('punch')" class="px-5 py-2 bg-red-600 font-bold text-xs rounded text-white">UPPERCUT STRIKE</button>
+            <button onclick="triggerButton('punch')" class="px-5 py-2 bg-red-600 font-bold text-xs rounded text-white active:bg-red-400">UPPERCUT STRIKE</button>
           </div>
         `;
       }
@@ -1807,7 +2154,6 @@
       activeGameInstance = { handleInput: punch };
     }
 
-    // 32. PLATFORMER
     function startPlatformer() {
       let px = 200, py = 250, velocityY = 0;
       function loop() {
@@ -1828,7 +2174,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 33. RPG DUNGEON
     function startRpg() {
       let px = 200, py = 150; let chestX = 300, chestY = 80;
       function loop() {
@@ -1851,7 +2196,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 34. SHOOTER
     function startShooter() {
       let tx = Math.random()*300 + 50, ty = Math.random()*200 + 50;
       function loop() {
@@ -1872,7 +2216,6 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
-    // 35. TOWER DEFENSE
     function startDefense() {
       let bx = 0, score = 0;
       function loop() {
@@ -1888,39 +2231,40 @@
     }
 
     window.onload = function() {
-      // Setup the window backdoor shortcuts
+      // Configure developer console mutations cleanly
       window.game = {
-        coins: globalUser.coins,
+        get coins() {
+          return globalUser.coins;
+        },
+        set coins(val) {
+          globalUser.coins = val;
+          refreshStats();
+          triggerToast(`Coins set to ${val}!`);
+        },
         account: {
           status: {
             UNBAN: function() {
               unbanUserConsole();
+              return "Access restrictions successfully bypassed.";
             }
           }
         }
       };
 
-      Object.defineProperty(window.game, 'coins', {
-        get: () => globalUser.coins,
-        set: (val) => {
-          globalUser.coins = val;
-          refreshStats();
-          triggerToast(`Coins overwritten to ${val}!`);
-        }
-      });
-
       renderThemes();
       renderGameGrid();
       
-      // Load initial active background theme
       document.body.setAttribute("data-theme", globalUser.activeTheme);
       
-      // Inspect for persistent ban expiration
+      // Run statistics and daily logs sync initially
+      refreshStats();
+      updateDailyRewardUI();
+      setInterval(updateDailyRewardUI, 1000);
+
       if (globalUser.banExpires && globalUser.banExpires > Date.now()) {
         showBanScreen();
       } else {
-        refreshStats();
-        triggerToast("Welcome to PIXL ARCADE 8.0.0");
+        triggerToast("Welcome back to PIXL ARCADE 9.1.0");
       }
     };
   </script>
