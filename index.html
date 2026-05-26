@@ -6,7 +6,7 @@
   <title>PIXL ARCADE</title>
   <link rel="icon" type="image/x-icon" href="pixlarcade.ico">
   
-  <!-- Tailwind CSS & Retro Fonts -->
+  <!-- Tailwind CSS, Retro Fonts & FontAwesome Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -157,7 +157,6 @@
       transition: all 0.25s ease;
     }
     
-    /* Custom scrollbar for game listing on mobile */
     .scrollbar-none::-webkit-scrollbar {
       display: none;
     }
@@ -169,7 +168,7 @@
 </head>
 <body data-theme="dark" class="crt-effect">
 
-  <!-- ARCADE BAN SCREEN -->
+  <!-- SECURITY BAN SCREEN OVERLAY -->
   <div class="fixed inset-0 bg-[#060103] z-[99999] hidden flex-col items-center justify-center p-6 text-center border-[8px] border-[#ef4444]" id="banScreen">
     <div class="text-4xl sm:text-6xl font-extrabold text-[#ef4444] mb-4 tracking-wider uppercase animate-pulse">
       <i class="fa-solid fa-ban mr-3 animate-spin"></i>ACCESS FORBIDDEN
@@ -197,26 +196,34 @@
     </div>
   </div>
 
-  <!-- HEADER -->
-  <header class="glass-card sticky top-0 z-[100] m-3 p-4 flex flex-wrap items-center justify-between gap-4">
+  <header class="glass-card m-3 p-4 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-[100]">
     <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)]">
-        <i class="fa-solid fa-gamepad text-white text-xl animate-bounce"></i>
+        <i class="fa-solid fa-cloud-bolt text-white text-xl animate-bounce"></i>
       </div>
       <div>
         <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">PIXL<span class="text-violet-400">ARCADE</span></h1>
-        <p class="text-[10px] font-mono text-violet-300 font-semibold tracking-wider uppercase">System Upgrade v9.1.0</p>
+        <p class="text-[10px] font-mono text-violet-300 font-semibold tracking-wider uppercase">System Upgrade v10.0.0 (Cloud)</p>
       </div>
     </div>
 
     <div class="flex items-center gap-3 flex-wrap">
+      <!-- Cloud Connection Status Indicator -->
+      <div id="cloudStatusIndicator" class="bg-slate-900/60 text-slate-400 font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs border border-slate-800">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
+          <span id="statusIndicatorDot" class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span>
+        </span>
+        <span id="statusText">Connecting...</span>
+      </div>
+
       <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black px-4 py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm shadow-md transition-transform hover:scale-105" title="Earned currency">
         <i class="fa-solid fa-coins animate-spin"></i>
         <span id="globalCoins" class="font-mono">50</span> Coins
       </div>
 
       <div class="bg-violet-950/40 text-violet-300 font-bold px-4 py-2 rounded-full flex items-center gap-2 text-xs border border-violet-800/40 hover:border-violet-400 cursor-pointer" onclick="openProfileModal()">
-        <i class="fa-solid fa-user-ninja"></i>
+        <i class="fa-solid fa-user-astronaut"></i>
         <span id="profileName">GuestArcader</span>
       </div>
 
@@ -226,7 +233,6 @@
     </div>
   </header>
 
-  <!-- THEME SELECT PANEL -->
   <div id="themePanel" class="glass-card fixed right-4 top-24 z-[110] p-4 w-72 hidden animate-fade-in">
     <h4 class="text-xs font-mono font-bold text-violet-400 uppercase tracking-widest mb-3 border-b border-violet-900 pb-2">Themes Custom Shop</h4>
     <div class="flex flex-col gap-2 max-h-96 overflow-y-auto pr-1" id="themeList"></div>
@@ -236,15 +242,15 @@
 
     <!-- HERO SECTION GRID -->
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <!-- Welcome card -->
+      <!-- Welcome Card -->
       <div class="lg:col-span-2 text-left p-6 sm:p-12 relative overflow-hidden rounded-3xl bg-slate-950/40 border border-slate-900 flex flex-col justify-center">
         <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-violet-600/10 blur-[120px] rounded-full pointer-events-none"></div>
         <span class="inline-flex self-start items-center gap-2 bg-violet-950/50 border border-violet-800/40 text-violet-400 font-mono text-xs font-bold px-4 py-1.5 rounded-full mb-4">
-          <i class="fa-solid fa-bolt animate-bounce"></i> 35-IN-1 RETRO COMPILATION FULLY PLAYABLE
+          <i class="fa-solid fa-cloud-arrow-up animate-bounce"></i> v10.0.0 CLOUD DEPLOYMENT COMPLETED
         </span>
-        <h2 class="text-3xl sm:text-5xl font-black leading-tight mb-4 tracking-tight">The Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-500 neon-text">v9.1.0</span> Grid</h2>
+        <h2 class="text-3xl sm:text-5xl font-black leading-tight mb-4 tracking-tight">The Ultimate <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-500 neon-text">v10.0.0</span> Grid</h2>
         <p class="text-slate-400 max-w-xl text-sm sm:text-base mb-6">
-          Explore our compilation! All 35 classic game architectures are active with persistent coin savings, right-click and mobile flags in Minesweeper, and optimized layouts.
+          Access your retro profile anytime, anywhere. Create an account with Google, Apple, or Email to instantly sync your coins, custom theme purchases, and highscores securely in the cloud.
         </p>
 
         <div class="flex items-center gap-4 flex-wrap max-w-lg">
@@ -289,7 +295,6 @@
       </div>
     </section>
 
-    <!-- Search & Filters -->
     <div class="glass-card p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
       <div class="relative w-full md:w-96">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
@@ -308,41 +313,106 @@
 
   </main>
 
-  <!-- PROFILE MODAL -->
+  <!-- AUTHENTICATION & IDENTITY PORTAL MODAL -->
   <div id="profileModal" class="fixed inset-0 z-[120] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="glass-card max-w-md w-full p-6 relative">
+    <div class="glass-card max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto scrollbar-none">
       <button onclick="closeProfileModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white">
         <i class="fa-solid fa-times text-xl"></i>
       </button>
-      <h3 class="text-2xl font-black text-white mb-4"><i class="fa-solid fa-id-card text-violet-400 mr-2"></i> Player Retro Identity</h3>
-      <div class="flex flex-col gap-4">
-        <div>
-          <label class="text-xs font-mono font-bold text-slate-400 uppercase block mb-1">Handle Alias</label>
-          <input type="text" id="usernameInput" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-white font-semibold focus:outline-none focus:border-violet-500" placeholder="Choose username...">
+
+      <h3 class="text-2xl font-black text-white mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-id-card text-violet-400"></i> Player Retro Identity
+      </h3>
+      <p class="text-xs text-slate-400 font-mono mb-4 border-b border-slate-800 pb-3">Configure local tags or synchronize database parameters in cloud blocks.</p>
+
+      <!-- TAB LAYOUTS FOR ANONYMOUS GUESTS VS LOGGED IN USERS -->
+      <div id="authRequiredSection" class="mb-5">
+        <!-- Social Identity Connection Buttons -->
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          <button onclick="handleGoogleAuth()" class="py-2.5 px-3 bg-[#e05030]/20 hover:bg-[#e05030]/30 border border-[#e05030]/40 text-rose-300 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition duration-200">
+            <i class="fa-brands fa-google text-rose-400"></i> Google Log In
+          </button>
+          <button onclick="handleAppleAuth()" class="py-2.5 px-3 bg-slate-900 border border-slate-700 text-slate-300 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition duration-200">
+            <i class="fa-brands fa-apple text-white text-sm"></i> Apple Log In
+          </button>
         </div>
-        <button onclick="saveProfile()" class="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl transition duration-150">
-          Save Profile
+
+        <div class="flex items-center gap-2 mb-4 text-xs font-mono text-slate-500">
+          <span class="flex-1 h-px bg-slate-800"></span>
+          <span>OR MANAGE SECURE CODES</span>
+          <span class="flex-1 h-px bg-slate-800"></span>
+        </div>
+
+        <!-- Auth Mode Selector -->
+        <div class="flex gap-2 bg-slate-950 p-1 rounded-xl mb-3 border border-slate-800 text-xs">
+          <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-1.5 font-bold rounded-lg text-center bg-violet-600 text-white transition">Sign In</button>
+          <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-1.5 font-bold rounded-lg text-center text-slate-400 hover:text-slate-200 transition">Register Account</button>
+        </div>
+
+        <!-- Input Parameters Area -->
+        <div class="space-y-3">
+          <div>
+            <label class="text-[10px] font-mono font-bold text-slate-500 uppercase block mb-1">Email Coordinates</label>
+            <input type="email" id="authEmail" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 text-sm font-mono text-white focus:outline-none focus:border-violet-500 transition" placeholder="terminal@pixl.app">
+          </div>
+          <div>
+            <label class="text-[10px] font-mono font-bold text-slate-500 uppercase block mb-1">Secure Passphrase</label>
+            <input type="password" id="authPassword" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 text-sm font-mono text-white focus:outline-none focus:border-violet-500 transition" placeholder="••••••••">
+          </div>
+          <button id="authActionButton" onclick="handleEmailAuth()" class="w-full py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition shadow-lg shadow-violet-500/20">
+            Establish Connection
+          </button>
+        </div>
+      </div>
+
+      <!-- Display user profile if connected -->
+      <div id="authConnectedSection" class="hidden bg-slate-900/60 border border-violet-500/30 p-4 rounded-2xl mb-5 text-left relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 w-24 h-24 bg-violet-600/10 rounded-full blur-xl"></div>
+        <div class="flex items-start gap-3">
+          <div class="w-11 h-11 rounded-full bg-violet-600/20 border border-violet-400 flex items-center justify-center text-violet-400 font-bold text-lg" id="profileInitials">G</div>
+          <div>
+            <h4 class="text-sm font-bold text-white flex items-center gap-1.5" id="connectedEmail">Guest Mode</h4>
+            <p class="text-[10px] font-mono text-emerald-400 font-bold flex items-center gap-1 mt-0.5">
+              <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>LIVE CLOUD SYNCHRONIZATION ACTIVE</span>
+            </p>
+          </div>
+        </div>
+        <button onclick="handleSignOut()" class="w-full mt-4 py-2 bg-slate-950 border border-slate-800 hover:border-red-500/50 hover:text-red-400 text-slate-400 font-bold rounded-xl text-xs transition">
+          Sign Out of Account Terminal
         </button>
-        <div class="bg-slate-900/60 p-4 rounded-xl text-xs font-mono text-slate-400 space-y-2">
-          <p class="text-center font-bold text-slate-200 uppercase mb-2">Retro Milestones</p>
-          <div class="flex justify-between border-b border-slate-800 pb-1">
-            <span>👾 High Score King</span>
-            <span id="badgeHighScore" class="text-slate-500">Locked</span>
-          </div>
-          <div class="flex justify-between border-b border-slate-800 pb-1">
-            <span>🪙 Coin Master</span>
-            <span id="badgeCoins" class="text-slate-500">Locked</span>
-          </div>
-          <div class="flex justify-between">
-            <span>🎨 Palette Customizer</span>
-            <span id="badgeThemes" class="text-slate-500">Locked</span>
-          </div>
+      </div>
+
+      <!-- Username Alias (Allowed for both guest & registered) -->
+      <div>
+        <label class="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">Handle Alias</label>
+        <input type="text" id="usernameInput" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-white font-semibold focus:outline-none focus:border-violet-500" placeholder="Choose username...">
+      </div>
+      <button onclick="saveProfile()" class="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl transition duration-150">
+        Update Local & Cloud Identity
+      </button>
+
+      <div class="bg-slate-900/60 p-4 rounded-xl text-xs font-mono text-slate-400 space-y-2 mt-4">
+        <p class="text-center font-bold text-slate-200 uppercase mb-2">Retro Milestones</p>
+        <div class="flex justify-between border-b border-slate-800 pb-1">
+          <span>👾 High Score King</span>
+          <span id="badgeHighScore" class="text-slate-500">Locked</span>
+        </div>
+        <div class="flex justify-between border-b border-slate-800 pb-1">
+          <span>🪙 Coin Master</span>
+          <span id="badgeCoins" class="text-slate-500">Locked</span>
+        </div>
+        <div class="flex justify-between">
+          <span>🎨 Palette Customizer</span>
+          <span id="badgeThemes" class="text-slate-500">Locked</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- GAME CONSOLE TERMINAL -->
   <div id="consoleOverlay" class="fixed inset-0 z-[500] bg-black/95 hidden flex-col transition-opacity duration-300">
     <header class="glass-card flex items-center justify-between p-4 m-3 mb-0">
       <div class="flex items-center gap-3">
@@ -399,14 +469,13 @@
         </div>
 
         <p class="text-xs text-center text-slate-500 font-mono tracking-wide mt-2">
-          <i class="fa-solid fa-keyboard text-violet-400 mr-1"></i> Desktop Keyboard arrows & Spacebar supported. Touchpad / click controls also active!
+          <i class="fa-solid fa-keyboard text-violet-400 mr-1"></i> Desktop Keyboard arrows & Spacebar supported. Canvas touch & mobile click controls fully active!
         </p>
 
       </div>
     </div>
   </div>
 
-  <!-- CHANGELOG MODAL -->
   <div id="changelogModal" class="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="glass-card max-w-lg w-full p-6 relative">
       <button onclick="closeChangelogs()" class="absolute right-4 top-4 text-slate-400 hover:text-white">
@@ -415,19 +484,19 @@
       <h3 class="text-2xl font-black text-white mb-3 flex items-center gap-2"><i class="fa-solid fa-scroll text-yellow-400"></i> SYSTEM CHANGELOGS</h3>
       <div class="space-y-4 text-slate-300 text-xs font-mono max-h-96 overflow-y-auto pr-2">
         <div class="border-b border-slate-800 pb-2">
-          <p class="text-white font-bold text-sm">v9.1.0 (Mobile Controls & Flag Sweeper Fixes)</p>
+          <p class="text-white font-bold text-sm">v10.0.0 (Cloud Sync & Authentication Update)</p>
           <ul class="list-disc list-inside mt-2 space-y-1">
-            <li>Fixed coin storage! Default values merge seamlessly with your active `localStorage` file to prevent coin resetting back to 50 on refreshes.</li>
-            <li>Upgraded Minesweeper and Minesweeper Hex! Introduced authentic right-click flagging for desktop, paired with a tactile "Reveal Mode / Flag Mode" toggle button for flawless mobile tap flagging.</li>
-            <li>Designed high-performance virtual touch overlays that bypass double-tap scrolling delays.</li>
+            <li>Integrated secure Google, Apple, and custom Email/Password authentication.</li>
+            <li>Introduced strict Firebase Firestore cloud path bindings to synchronize player variables (unlocked configurations, trophies, highscores, coins) smoothly.</li>
+            <li>Implemented real-time local-to-cloud profile merging algorithms when converting Guest Sessions into verified clouds.</li>
           </ul>
         </div>
         <div class="border-b border-slate-800 pb-2">
-          <p class="text-white font-bold text-sm">v9.0.0 (Daily rewards & Themes Upgrade)</p>
+          <p class="text-white font-bold text-sm">v9.2.0 (Dino Upgrades & Parallax Backgrounds)</p>
           <ul class="list-disc list-inside mt-2 space-y-1">
-            <li>Designed a premium Daily Reward system offering 100 bonus coins with real-time countdown timer tracking.</li>
-            <li>Expanded the theme library to 12 distinct styled configurations purchasable with in-game currency.</li>
-            <li>Polished security filters: device ban and sentiment remorse appeal structures function flawlessly.</li>
+            <li>Fixed T-Rex Run! Added parallax scrolling clouds, textured sandy terrain lines, cactus branch variants, and fluid leg-running frame structures.</li>
+            <li>Direct Canvas Touch: Jump natively in T-Rex Run simply by tapping the canvas viewport—no clunky gamepad buttons required!</li>
+            <li>Optimized game-state restart loop sequence for flawless continuous score reporting.</li>
           </ul>
         </div>
       </div>
@@ -443,7 +512,6 @@
     <span id="toastMsg">Notification triggered.</span>
   </div>
 
-  <!-- FOOTER -->
   <footer class="mt-16 mb-8 text-center space-y-4">
     <p class="text-slate-500 font-mono text-xs font-bold tracking-wider">
       MADE BY <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-500 font-extrabold neon-text">YVZGOAT</span>
@@ -455,7 +523,31 @@
     </div>
   </footer>
 
-  <script>
+  <!-- INTEGRATING FIREBASE CLIENT MODULES -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Client's Custom Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDMWnAlpNIKNU_UeonEXy5FNeVX3aQj-_I",
+      authDomain: "pixlarcade.firebaseapp.com",
+      projectId: "pixlarcade",
+      storageBucket: "pixlarcade.firebasestorage.app",
+      messagingSenderId: "1022148096848",
+      appId: "1:1022148096848:web:cf2a34dca28d446d43f255",
+      measurementId: "G-6ESZJSGND3"
+    };
+
+    // Initialize Services
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Context Config Helpers
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'pixlarcade-v10';
+
     class AudioSynthEngine {
       constructor() {
         this.ctx = null;
@@ -561,7 +653,7 @@
       { id: "solitaire", name: "Neon Solitaire", cat: "puzzle", icon: "fa-solid fa-layer-group", color: "from-blue-600 to-indigo-800", desc: "Arrange card piles by values in a condensed, high-speed matching layout." },
       { id: "simonsays", name: "Memory Match", cat: "puzzle", icon: "fa-solid fa-brain", color: "from-pink-400 to-rose-600", desc: "Repeat the growing sequence of lights and sounds. Test your memory." },
       { id: "match3", name: "Gem Swap", cat: "puzzle", icon: "fa-solid fa-gem", color: "from-cyan-400 to-blue-600", desc: "Swap adjacent crystals to match 3 or more and trigger cascading combos." },
-      { id: "dino", name: "T-Rex Run", cat: "action", icon: "fa-solid fa-dragon", color: "from-amber-600 to-orange-800", desc: "Endless runner. Jump over pixel cacti structures." },
+      { id: "dino", name: "T-Rex Run", cat: "action", icon: "fa-solid fa-dragon", color: "from-amber-600 to-orange-800", desc: "Endless scrolling T-Rex. Jump over procedurally spawned cactus structures." },
       { id: "slots", name: "Crypto Slots", cat: "casino", icon: "fa-solid fa-coins", color: "from-yellow-500 to-amber-700", desc: "Spin the digital reels. Match symbols across paylines to win big multipliers." },
       { id: "roulette", name: "Roulette Wheel", cat: "casino", icon: "fa-solid fa-circle-notch", color: "from-red-600 to-red-800", desc: "Place your bets on red, black, or specific numbers as the cyber wheel spins." },
       { id: "sudoku", name: "Grid Logic", cat: "puzzle", icon: "fa-solid fa-table-cells", color: "from-indigo-400 to-purple-600", desc: "Fill the grid so every quadrant contains sequential numeric numbers." },
@@ -591,16 +683,7 @@
     };
 
     let globalUser = { ...defaultUser };
-
-    // Fetch existing data safely and merge to avoid wiping previous variables
-    if (localStorage.getItem("PIXL_ARCADE_V9")) {
-      try {
-        const parsed = JSON.parse(localStorage.getItem("PIXL_ARCADE_V9"));
-        globalUser = { ...defaultUser, ...parsed };
-      } catch (e) {
-        console.error("Storage loading failed. Merging defaults.", e);
-      }
-    }
+    let currentAuthMode = 'login'; // 'login' or 'register'
 
     const UI = {
       globalCoins: document.getElementById("globalCoins"),
@@ -627,7 +710,21 @@
       banTimer: document.getElementById("banTimer"),
       appealText: document.getElementById("appealText"),
       appealLog: document.getElementById("appealLog"),
-      changelogModal: document.getElementById("changelogModal")
+      changelogModal: document.getElementById("changelogModal"),
+      
+      // Auth Element Bindings
+      authRequiredSection: document.getElementById("authRequiredSection"),
+      authConnectedSection: document.getElementById("authConnectedSection"),
+      authEmail: document.getElementById("authEmail"),
+      authPassword: document.getElementById("authPassword"),
+      authActionButton: document.getElementById("authActionButton"),
+      tabLoginBtn: document.getElementById("tabLoginBtn"),
+      tabRegisterBtn: document.getElementById("tabRegisterBtn"),
+      profileInitials: document.getElementById("profileInitials"),
+      connectedEmail: document.getElementById("connectedEmail"),
+      cloudStatusIndicator: document.getElementById("cloudStatusIndicator"),
+      statusIndicatorDot: document.getElementById("statusIndicatorDot"),
+      statusText: document.getElementById("statusText")
     };
 
     const ctx = UI.arcadeCanvas.getContext("2d");
@@ -644,6 +741,78 @@
       }, 2500);
     }
 
+    async function saveStateToCloud() {
+      const user = auth.currentUser;
+      if (!user) return;
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'gameState', 'data');
+        await setDoc(docRef, globalUser, { merge: true });
+        updateCloudStatus('connected');
+      } catch (error) {
+        console.error("Cloud saving sync failed:", error);
+        updateCloudStatus('error');
+      }
+    }
+
+    async function fetchStateFromCloud(user) {
+      if (!user) return;
+      updateCloudStatus('loading');
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'gameState', 'data');
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          // Smart merge: prevent resetting local state to smaller numbers
+          globalUser.coins = Math.max(globalUser.coins, cloudData.coins || 50);
+          globalUser.name = cloudData.name || globalUser.name;
+          globalUser.activeTheme = cloudData.activeTheme || globalUser.activeTheme;
+          globalUser.banExpires = Math.max(globalUser.banExpires || 0, cloudData.banExpires || 0);
+          globalUser.lastDailyClaim = Math.max(globalUser.lastDailyClaim || 0, cloudData.lastDailyClaim || 0);
+          
+          // Merge game highscores intelligently
+          const localRecords = globalUser.records || {};
+          const cloudRecords = cloudData.records || {};
+          const mergedRecords = { ...localRecords };
+          for (const key in cloudRecords) {
+            mergedRecords[key] = Math.max(localRecords[key] || 0, cloudRecords[key] || 0);
+          }
+          globalUser.records = mergedRecords;
+
+          // Merge unlocked themes lists
+          const localThemes = globalUser.unlockedThemes || ["dark"];
+          const cloudThemes = cloudData.unlockedThemes || ["dark"];
+          globalUser.unlockedThemes = Array.from(new Set([...localThemes, ...cloudThemes]));
+
+          triggerToast("Successfully synchronized cloud profile state.");
+        } else {
+          // If no cloud doc exists, upload existing local configuration
+          await setDoc(docRef, globalUser);
+        }
+        updateCloudStatus('connected');
+        refreshStats();
+      } catch (error) {
+        console.error("Cloud fetch fail:", error);
+        updateCloudStatus('error');
+      }
+    }
+
+    function updateCloudStatus(status) {
+      if (status === 'connected') {
+        UI.statusIndicatorDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
+        UI.statusText.innerText = "Synced";
+        UI.cloudStatusIndicator.className = "bg-emerald-950/40 text-emerald-300 font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs border border-emerald-800/40";
+      } else if (status === 'loading') {
+        UI.statusIndicatorDot.className = "relative inline-flex rounded-full h-2 w-2 bg-amber-500";
+        UI.statusText.innerText = "Syncing...";
+        UI.cloudStatusIndicator.className = "bg-slate-900/60 text-amber-300 font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs border border-slate-800";
+      } else {
+        UI.statusIndicatorDot.className = "relative inline-flex rounded-full h-2 w-2 bg-rose-500";
+        UI.statusText.innerText = "Local Mode";
+        UI.cloudStatusIndicator.className = "bg-slate-900/60 text-slate-400 font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs border border-slate-800";
+      }
+    }
+
     function refreshStats() {
       UI.globalCoins.innerText = globalUser.coins;
       UI.profileName.innerText = globalUser.name;
@@ -652,7 +821,8 @@
       globalUser.trophies = recordCount;
       UI.totalTrophies.innerText = globalUser.trophies;
 
-      localStorage.setItem("PIXL_ARCADE_V9", JSON.stringify(globalUser));
+      localStorage.setItem("PIXL_ARCADE_V10", JSON.stringify(globalUser));
+      saveStateToCloud();
     }
 
     function showFloatingText(text, x, y, color) {
@@ -682,7 +852,8 @@
     function triggerDeviceBan() {
       const fiveMinutes = 5 * 60 * 1000;
       globalUser.banExpires = Date.now() + fiveMinutes;
-      localStorage.setItem("PIXL_ARCADE_V9", JSON.stringify(globalUser));
+      localStorage.setItem("PIXL_ARCADE_V10", JSON.stringify(globalUser));
+      saveStateToCloud();
       showBanScreen();
     }
 
@@ -908,6 +1079,225 @@
       });
     }
 
+    // AUTHENTICATION CONTROLLERS (GOOGLE, APPLE, EMAIL)
+    function switchAuthTab(mode) {
+      currentAuthMode = mode;
+      if (mode === 'login') {
+        UI.tabLoginBtn.className = "flex-1 py-1.5 font-bold rounded-lg text-center bg-violet-600 text-white transition";
+        UI.tabRegisterBtn.className = "flex-1 py-1.5 font-bold rounded-lg text-center text-slate-400 hover:text-slate-200 transition";
+        UI.authActionButton.innerText = "Establish Connection";
+      } else {
+        UI.tabLoginBtn.className = "flex-1 py-1.5 font-bold rounded-lg text-center text-slate-400 hover:text-slate-200 transition";
+        UI.tabRegisterBtn.className = "flex-1 py-1.5 font-bold rounded-lg text-center bg-violet-600 text-white transition";
+        UI.authActionButton.innerText = "Register Account Core";
+      }
+    }
+
+    async function handleEmailAuth() {
+      const email = UI.authEmail.value.trim();
+      const password = UI.authPassword.value.trim();
+
+      if (!email || !password) {
+        triggerToast("Email and Passphrase required!");
+        return;
+      }
+
+      try {
+        updateCloudStatus('loading');
+        if (currentAuthMode === 'login') {
+          await signInWithEmailAndPassword(auth, email, password);
+          triggerToast("Authenticated successfully!");
+        } else {
+          await createUserWithEmailAndPassword(auth, email, password);
+          triggerToast("Account Core registered!");
+        }
+        UI.authEmail.value = "";
+        UI.authPassword.value = "";
+      } catch (error) {
+        console.error("Auth process failed:", error);
+        triggerToast(`Process Failed: ${error.message}`);
+        updateCloudStatus('error');
+      }
+    }
+
+    async function handleGoogleAuth() {
+      try {
+        updateCloudStatus('loading');
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        triggerToast("Google sync established.");
+      } catch (error) {
+        console.error("Google Auth failed:", error);
+        if (error.code === 'auth/unauthorized-domain') {
+          showDomainAuthGuide("Google", error);
+        } else {
+          triggerToast("Google alignment failed.");
+        }
+        updateCloudStatus('error');
+      }
+    }
+
+    async function handleAppleAuth() {
+      try {
+        updateCloudStatus('loading');
+        const provider = new OAuthProvider('apple.com');
+        await signInWithPopup(auth, provider);
+        triggerToast("Apple sync established.");
+      } catch (error) {
+        console.error("Apple Auth failed:", error);
+        if (error.code === 'auth/unauthorized-domain') {
+          showDomainAuthGuide("Apple", error);
+        } else {
+          triggerToast("Apple alignment failed.");
+        }
+        updateCloudStatus('error');
+      }
+    }
+
+    async function handleSignOut() {
+      try {
+        updateCloudStatus('loading');
+        await signOut(auth);
+        
+        // Reset player parameters safely to default session values
+        globalUser = { ...defaultUser };
+        
+        // Restore local cache if it exists, so the user doesn't lose local progress
+        if (localStorage.getItem("PIXL_ARCADE_V10")) {
+          try {
+            const parsed = JSON.parse(localStorage.getItem("PIXL_ARCADE_V10"));
+            globalUser = { ...defaultUser, ...parsed };
+          } catch (e) {
+            globalUser = { ...defaultUser };
+          }
+        }
+        
+        refreshStats();
+        triggerToast("Successfully signed out of Cloud Terminal.");
+        closeProfileModal();
+      } catch (error) {
+        console.error("Sign out failed:", error);
+        triggerToast(`Sign out failed: ${error.message}`);
+        updateCloudStatus('error');
+      }
+    }
+
+    function showDomainAuthGuide(providerName, error) {
+      const currentHost = window.location.hostname || "the current domain";
+      
+      // Remove preexisting guide modal instances to avoid overlapping
+      const oldModal = document.getElementById('domainGuideModal');
+      if (oldModal) oldModal.remove();
+
+      const guideModal = document.createElement("div");
+      guideModal.id = "domainGuideModal";
+      guideModal.className = "fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4";
+      guideModal.innerHTML = `
+        <div class="glass-card max-w-lg w-full p-6 relative border-amber-500/50 shadow-[0_0_45px_rgba(245,158,11,0.25)]">
+          <button onclick="document.getElementById('domainGuideModal').remove()" class="absolute right-4 top-4 text-slate-400 hover:text-white">
+            <i class="fa-solid fa-times text-xl"></i>
+          </button>
+          
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 text-2xl mb-4">
+            <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+          </div>
+          
+          <h3 class="text-xl font-black text-white mb-2">Firebase Domain Unauthorized</h3>
+          <p class="text-xs text-slate-400 font-mono mb-4 leading-relaxed">
+            Firebase Auth has rejected the ${providerName} sign-in because your hosting sandbox is not registered in your credentials settings.
+          </p>
+          
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4 font-mono text-xs">
+            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Target Domain to Authorize:</p>
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-amber-400 select-all font-bold break-all" id="authTargetDomain">${currentHost}</span>
+              <button onclick="document.execCommand('copy'); triggerToast('Domain copied!');" class="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[10px] text-slate-300 hover:text-white transition">
+                Copy
+              </button>
+            </div>
+          </div>
+          
+          <div class="space-y-3 mb-6 text-xs text-slate-300">
+            <h4 class="font-bold text-white uppercase tracking-wider text-[11px] flex items-center gap-1.5 text-cyan-400">
+              <i class="fa-solid fa-circle-info"></i> How to solve this in Firebase:
+            </h4>
+            <ol class="list-decimal list-inside space-y-1.5 pl-1 leading-normal text-slate-400 font-mono text-[11px]">
+              <li>Go to your <a href="https://console.firebase.google.com" target="_blank" class="text-violet-400 underline hover:text-violet-300">Firebase Console</a></li>
+              <li>Navigate to <span class="text-white font-bold">Authentication</span> &rarr; <span class="text-white font-bold">Settings</span> tab</li>
+              <li>Select <span class="text-white font-bold">Authorized domains</span></li>
+              <li>Click <span class="text-white font-bold">Add domain</span> and paste the target domain shown above</li>
+            </ol>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row gap-2">
+            <button onclick="window.simulateMockLogin('${providerName}')" class="flex-1 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition shadow-lg shadow-violet-500/20">
+              Demo Mode (Local Sync)
+            </button>
+            <button onclick="document.getElementById('domainGuideModal').remove()" class="py-2.5 px-4 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">
+              Close
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(guideModal);
+    }
+
+    function simulateMockLogin(providerName) {
+      const guide = document.getElementById('domainGuideModal');
+      if (guide) guide.remove();
+      
+      // Initialize with simulated account data
+      globalUser.name = `${providerName}Player`;
+      globalUser.coins = Math.max(globalUser.coins, 150); // Gift some starting coins to test customization features
+      refreshStats();
+      closeProfileModal();
+      triggerToast(`Demo mode active! Offline account loaded as: ${globalUser.name}`);
+    }
+
+    // STATE CHANGE MONITOR FOR ON-AUTH
+    onAuthStateChanged(auth, async (user) => {
+      if (user && !user.isAnonymous) {
+        // Authenticated Cloud Session
+        UI.authRequiredSection.classList.add("hidden");
+        UI.authConnectedSection.classList.remove("hidden");
+        UI.connectedEmail.innerText = user.email || user.displayName || "Cloud Sync Account";
+        UI.profileInitials.innerText = (user.email || "C").charAt(0).toUpperCase();
+        
+        await fetchStateFromCloud(user);
+      } else if (user && user.isAnonymous) {
+        // Connected as Anonymous Cloud Guest
+        UI.authRequiredSection.classList.remove("hidden");
+        UI.authConnectedSection.classList.add("hidden");
+        await fetchStateFromCloud(user);
+      } else {
+        // Guest / Anonymous fallback
+        UI.authRequiredSection.classList.remove("hidden");
+        UI.authConnectedSection.classList.add("hidden");
+        
+        if (!user) {
+          // Attempt Anonymous Sign-In but handle provider restrictions gracefully (fallback to Local Storage)
+          try {
+            await signInAnonymously(auth);
+          } catch (e) {
+            // Silently fall back to Local Storage Guest Mode if anonymous sign-in is disabled in Firebase console
+            console.warn("Anonymous auth is restricted/disabled in Firebase Console. Using Local Storage Guest Mode.", e.message);
+            updateCloudStatus('local');
+            
+            // Re-sync stats from local storage safely
+            if (localStorage.getItem("PIXL_ARCADE_V10")) {
+              try {
+                const parsed = JSON.parse(localStorage.getItem("PIXL_ARCADE_V10"));
+                globalUser = { ...defaultUser, ...parsed };
+                refreshStats();
+              } catch (err) {
+                console.error("Local backup loading failed:", err);
+              }
+            }
+          }
+        }
+      }
+    });
+
     function renderGameGrid() {
       UI.gameGrid.innerHTML = "";
       gamesDatabase.forEach(g => {
@@ -938,6 +1328,8 @@
 
     function loadGame(gameId) {
       if (canvasLoop) cancelAnimationFrame(canvasLoop);
+      if (activeGameInstance && activeGameInstance.clean) activeGameInstance.clean();
+      
       const gameObj = gamesDatabase.find(g => g.id === gameId);
       if (!gameObj) return;
 
@@ -1268,7 +1660,6 @@
         let cell = board[r][c];
         if (cell.rev) return;
 
-        // If in Flag mode or right click requested, toggle flag
         if (forceFlag || mineFlagMode) {
           cell.flagged = !cell.flagged;
           Sound.playTone(450, "sine", 0.05);
@@ -1277,7 +1668,6 @@
           return;
         }
 
-        // If cell is flagged, prevent accidental reveal click
         if (cell.flagged) return;
 
         cell.rev = true;
@@ -1801,19 +2191,239 @@
     }
 
     function startDino() {
-      let dy = 0, dv = 0; let obstacleX = 400; let score = 0;
+      UI.mobileGamepad.classList.add("hidden"); // Canvas touch triggers the jump, gamepad hidden for cleaner UI!
+      
+      let dino = {
+        x: 50,
+        y: 220, // Ground base is at 250 (dino height is 30, so 220 is standard)
+        w: 24,
+        h: 30,
+        vy: 0,
+        gravity: 0.45,
+        jumpForce: -8.5,
+        isGrounded: true,
+        runFrame: 0
+      };
+
+      let obstacles = [];
+      let clouds = [
+        { x: 100, y: 50, speed: 0.5, size: 20 },
+        { x: 280, y: 80, speed: 0.3, size: 15 }
+      ];
+      let groundLines = [
+        { x: 0, w: 50 }, { x: 100, w: 30 }, { x: 220, w: 60 }, { x: 340, w: 40 }
+      ];
+      
+      let score = 0;
+      let gameSpeed = 5;
+      let spawnTimer = 0;
+      let state = "playing"; // "playing", "gameover"
+
+      function jump() {
+        if (dino.isGrounded && state === "playing") {
+          dino.vy = dino.jumpForce;
+          dino.isGrounded = false;
+          Sound.playTone(350, "triangle", 0.08);
+        } else if (state === "gameover") {
+          resetGame();
+        }
+      }
+
+      function resetGame() {
+        dino.y = 220;
+        dino.vy = 0;
+        dino.isGrounded = true;
+        obstacles = [];
+        score = 0;
+        gameSpeed = 5;
+        spawnTimer = 0;
+        state = "playing";
+        updateScore(0, "dino");
+      }
+
       function loop() {
         canvasLoop = requestAnimationFrame(loop);
-        ctx.fillStyle = "#0c0a24"; ctx.fillRect(0,0, UI.arcadeCanvas.width, UI.arcadeCanvas.height);
-        dv += 0.3; dy += dv; if (dy > 0) { dy = 0; dv = 0; }
-        ctx.fillStyle = "var(--accent)"; ctx.fillRect(50, 200 + dy, 15, 30);
-        obstacleX -= 4.5; if (obstacleX < -15) { obstacleX = 400; score += 10; updateScore(score, "dino"); Sound.playTone(300, "sine", 0.05); }
-        ctx.fillStyle = "red"; ctx.fillRect(obstacleX, 215, 15, 15);
-        if (obstacleX < 65 && obstacleX > 35 && dy > -15) { Sound.lose(); score = 0; }
+        
+        // Background sky clear
+        ctx.fillStyle = "#0c0a24";
+        ctx.fillRect(0, 0, UI.arcadeCanvas.width, UI.arcadeCanvas.height);
+        
+        // Parallax clouds
+        ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
+        clouds.forEach(cloud => {
+          cloud.x -= cloud.speed;
+          if (cloud.x < -50) cloud.x = 450;
+          
+          ctx.beginPath();
+          ctx.arc(cloud.x, cloud.y, cloud.size, 0, Math.PI * 2);
+          ctx.arc(cloud.x + 15, cloud.y - 5, cloud.size * 0.8, 0, Math.PI * 2);
+          ctx.arc(cloud.x - 15, cloud.y + 2, cloud.size * 0.7, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Ground line
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 250);
+        ctx.lineTo(400, 250);
+        ctx.stroke();
+
+        // Parallax desert details
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+        groundLines.forEach(line => {
+          line.x -= gameSpeed;
+          if (line.x < -line.w) line.x = 420;
+          ctx.beginPath();
+          ctx.moveTo(line.x, 254);
+          ctx.lineTo(line.x + line.w, 254);
+          ctx.stroke();
+        });
+
+        if (state === "playing") {
+          // Physics equations
+          dino.vy += dino.gravity;
+          dino.y += dino.vy;
+
+          if (dino.y >= 220) {
+            dino.y = 220;
+            dino.vy = 0;
+            dino.isGrounded = true;
+          }
+
+          // Animated running frame cycles
+          dino.runFrame = (dino.runFrame + 0.15) % 2;
+
+          // Cactus procedural spawning
+          spawnTimer++;
+          if (spawnTimer > Math.max(55, 110 - score * 0.08)) {
+            let type = Math.random() > 0.5 ? "single" : "double";
+            obstacles.push({
+              x: 420,
+              y: 220,
+              w: type === "single" ? 15 : 28,
+              h: Math.floor(Math.random() * 10) + 25,
+              type: type
+            });
+            spawnTimer = 0;
+          }
+
+          // Dynamic frame-based score tracking
+          score += 0.25;
+          let integerScore = Math.floor(score);
+          updateScore(integerScore, "dino");
+
+          // Gradual speed increases
+          gameSpeed = 5 + (score * 0.012);
+        }
+
+        // Render Cacti Obstacles
+        obstacles.forEach((obs) => {
+          if (state === "playing") {
+            obs.x -= gameSpeed;
+          }
+
+          // Draw procedural organic retro branching
+          ctx.fillStyle = "#10b981";
+          ctx.fillRect(obs.x, obs.y + 30 - obs.h, obs.w, obs.h);
+          ctx.fillStyle = "#059669";
+          ctx.fillRect(obs.x - 4, obs.y + 40 - obs.h, 4, 10);
+          ctx.fillRect(obs.x + obs.w, obs.y + 36 - obs.h, 4, 10);
+
+          // Accurate collision bounding coordinates
+          let dinoBox = { x: dino.x + 4, y: dino.y, w: dino.w - 8, h: dino.h };
+          let obsBox = { x: obs.x, y: obs.y + 30 - obs.h, w: obs.w, h: obs.h };
+
+          if (
+            dinoBox.x < obsBox.x + obsBox.w &&
+            dinoBox.x + dinoBox.w > obsBox.x &&
+            dinoBox.y < obsBox.y + obsBox.h &&
+            dinoBox.y + dinoBox.h > obsBox.y
+          ) {
+            state = "gameover";
+            Sound.lose();
+          }
+        });
+
+        // Filter offscreen cacti structures
+        obstacles = obstacles.filter(obs => obs.x > -40);
+
+        // Render Dino vector elements
+        ctx.fillStyle = "var(--accent)";
+        
+        // Dinosaur silhouette bodies
+        ctx.fillRect(dino.x + 6, dino.y, 14, 14); // Head
+        ctx.fillRect(dino.x + 16, dino.y + 4, 4, 4); // Snout
+        ctx.fillRect(dino.x + 2, dino.y + 10, 16, 12); // Body
+        ctx.fillRect(dino.x, dino.y + 14, 4, 6); // Tail
+
+        // Eye pixel
+        ctx.fillStyle = "#0c0a24";
+        ctx.fillRect(dino.x + 10, dino.y + 3, 2, 2);
+
+        // Alternating Run animation cycle legs
+        ctx.fillStyle = "var(--accent)";
+        if (dino.isGrounded && state === "playing") {
+          if (Math.floor(dino.runFrame) === 0) {
+            ctx.fillRect(dino.x + 4, dino.y + 22, 4, 8); // Leg 1
+            ctx.fillRect(dino.x + 12, dino.y + 22, 4, 4); // Leg 2 (up)
+          } else {
+            ctx.fillRect(dino.x + 4, dino.y + 22, 4, 4);  // Leg 1 (up)
+            ctx.fillRect(dino.x + 12, dino.y + 22, 4, 8); // Leg 2
+          }
+        } else {
+          ctx.fillRect(dino.x + 4, dino.y + 22, 4, 8);
+          ctx.fillRect(dino.x + 12, dino.y + 22, 4, 8);
+        }
+
+        // Overlay Game Over Panel
+        if (state === "gameover") {
+          ctx.fillStyle = "rgba(4, 4, 10, 0.75)";
+          ctx.fillRect(0, 0, 400, 300);
+
+          ctx.fillStyle = "#fff";
+          ctx.font = "800 22px Syne";
+          ctx.textAlign = "center";
+          ctx.fillText("G A M E   O V E R", 200, 120);
+          
+          ctx.fillStyle = "var(--accent4)";
+          ctx.font = "bold 11px 'Space Mono'";
+          ctx.fillText(`FINAL RUN DISTANCE: ${Math.floor(score)}`, 200, 150);
+
+          ctx.fillStyle = "rgba(255,255,255,0.7)";
+          ctx.font = "11px 'Space Mono'";
+          ctx.fillText("Tap screen or press SPACE/UP to run again", 200, 190);
+        }
       }
-      function jump() { if (dy === 0) { dv = -6.5; Sound.playTone(350, "triangle", 0.05); } }
-      document.onkeydown = (e) => { if (e.key === ' ' || e.key === 'ArrowUp') jump(); };
-      activeGameInstance = { handleInput: jump, clean: () => { document.onkeydown = null; } };
+
+      // Keyboard event capturing
+      document.onkeydown = (e) => {
+        if (e.key === ' ' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          jump();
+        }
+      };
+
+      // Direct canvas interactions for touchscreens
+      function handleTouch(e) {
+        e.preventDefault();
+        jump();
+      }
+
+      UI.arcadeCanvas.addEventListener("mousedown", handleTouch);
+      UI.arcadeCanvas.addEventListener("touchstart", handleTouch);
+
+      activeGameInstance = {
+        handleInput: (k) => {
+          if (k === 'ArrowUp' || k === 'Space') jump();
+        },
+        clean: () => {
+          document.onkeydown = null;
+          UI.arcadeCanvas.removeEventListener("mousedown", handleTouch);
+          UI.arcadeCanvas.removeEventListener("touchstart", handleTouch);
+        }
+      };
+
       canvasLoop = requestAnimationFrame(loop);
     }
 
@@ -1845,7 +2455,7 @@
         let winColor = winNum % 2 === 0 ? "RED" : "BLACK";
         UI.specialInterface.innerHTML = `
           <div class="text-center space-y-4">
-            <p class="text-lg">Spin Result: <span class="font-bold text-emerald-400">${winNum} (${winColor})</span></p>
+            <p class="text-lg">Result: <span class="font-bold text-emerald-400">${winNum} (${winColor})</span></p>
             <button onclick="triggerButton('spin')" class="px-5 py-2 bg-rose-600 rounded font-bold text-xs text-white">SPIN ROULETTE</button>
           </div>
         `;
@@ -2230,8 +2840,19 @@
       canvasLoop = requestAnimationFrame(loop);
     }
 
+    // INITIALIZATION & GLOBAL ALIGNMENTS
     window.onload = function() {
-      // Configure developer console mutations cleanly
+      // Load local cache state if available
+      if (localStorage.getItem("PIXL_ARCADE_V10")) {
+        try {
+          const parsed = JSON.parse(localStorage.getItem("PIXL_ARCADE_V10"));
+          globalUser = { ...defaultUser, ...parsed };
+        } catch (e) {
+          console.error("Storage loading failed. Merging defaults.", e);
+        }
+      }
+
+      // Backdoor console command setups
       window.game = {
         get coins() {
           return globalUser.coins;
@@ -2239,13 +2860,13 @@
         set coins(val) {
           globalUser.coins = val;
           refreshStats();
-          triggerToast(`Coins set to ${val}!`);
+          triggerToast(`Coins configured to ${val}!`);
         },
         account: {
           status: {
             UNBAN: function() {
               unbanUserConsole();
-              return "Access restrictions successfully bypassed.";
+              return "Security bypass activated. Access restrictions cleared.";
             }
           }
         }
@@ -2256,7 +2877,6 @@
       
       document.body.setAttribute("data-theme", globalUser.activeTheme);
       
-      // Run statistics and daily logs sync initially
       refreshStats();
       updateDailyRewardUI();
       setInterval(updateDailyRewardUI, 1000);
@@ -2264,9 +2884,34 @@
       if (globalUser.banExpires && globalUser.banExpires > Date.now()) {
         showBanScreen();
       } else {
-        triggerToast("Welcome back to PIXL ARCADE 9.1.0");
+        triggerToast("Welcome back to PIXL ARCADE v10.0.0");
       }
     };
+
+    // Globalizing Interactive Selectors for HTML Actions
+    window.triggerButton = triggerButton;
+    window.claimDailyReward = claimDailyReward;
+    window.toggleThemePanel = toggleThemePanel;
+    window.openProfileModal = openProfileModal;
+    window.closeProfileModal = closeProfileModal;
+    window.saveProfile = saveProfile;
+    window.submitBanAppeal = submitBanAppeal;
+    window.openChangelogs = openChangelogs;
+    window.closeChangelogs = closeChangelogs;
+    window.filterCategory = filterCategory;
+    window.filterGames = filterGames;
+    window.loadGame = loadGame;
+    window.closeConsole = closeConsole;
+    window.resetCurrentGame = resetCurrentGame;
+    window.selectTheme = selectTheme;
+    window.toggleMineFlagMode = toggleMineFlagMode;
+    window.handleEmailAuth = handleEmailAuth;
+    window.handleGoogleAuth = handleGoogleAuth;
+    window.handleAppleAuth = handleAppleAuth;
+    window.handleSignOut = handleSignOut;
+    window.switchAuthTab = switchAuthTab;
+    window.simulateMockLogin = simulateMockLogin;
+
   </script>
 </body>
 </html>
